@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Event Checklist - Vendor App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#221a7f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131220",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen pb-24">
+<!-- Header -->
+<header class="sticky top-0 z-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-primary/10 px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary cursor-pointer">arrow_back</span>
+<h1 class="text-xl font-bold tracking-tight">Event Checklist</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<main class="p-4 space-y-6">
+<!-- Checklist Progress Card -->
+<section class="bg-white dark:bg-primary/5 border border-primary/10 rounded-xl p-5 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="space-y-1">
+<h2 class="text-lg font-bold">12 of 30 Tasks Completed</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">You're making great progress! 40% done.</p>
+<button class="mt-3 px-4 py-1.5 bg-primary text-white text-xs font-semibold rounded-lg">View Details</button>
+</div>
+<div class="relative flex items-center justify-center">
+<svg class="w-20 h-20 transform -rotate-90">
+<circle class="text-primary/10" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213.6" stroke-dashoffset="128.16" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<span class="absolute text-sm font-bold text-primary">40%</span>
+</div>
+</div>
+</section>
+<!-- Task Categories -->
+<section>
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+<button class="shrink-0 px-6 py-2 rounded-full bg-primary text-white text-sm font-medium">All</button>
+<button class="shrink-0 px-6 py-2 rounded-full bg-white dark:bg-primary/10 border border-primary/10 text-slate-600 dark:text-slate-300 text-sm font-medium">Venue</button>
+<button class="shrink-0 px-6 py-2 rounded-full bg-white dark:bg-primary/10 border border-primary/10 text-slate-600 dark:text-slate-300 text-sm font-medium">Catering</button>
+<button class="shrink-0 px-6 py-2 rounded-full bg-white dark:bg-primary/10 border border-primary/10 text-slate-600 dark:text-slate-300 text-sm font-medium">Invitations</button>
+<button class="shrink-0 px-6 py-2 rounded-full bg-white dark:bg-primary/10 border border-primary/10 text-slate-600 dark:text-slate-300 text-sm font-medium">Music</button>
+</div>
+</section>
+<!-- Task List -->
+<section class="space-y-4">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Upcoming Tasks</h3>
+<!-- Task Item 1: High Priority -->
+<div class="flex gap-4 bg-white dark:bg-primary/5 p-4 rounded-xl border border-primary/10">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined">event_busy</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Book Wedding Hall</h4>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-900/40 text-red-600 uppercase">High</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">June 12, 2024</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">location_on</span>
+<span class="text-xs text-slate-400">Grand Plaza Ballroom</span>
+</div>
+</div>
+</div>
+<!-- Task Item 2: Medium Priority -->
+<div class="flex gap-4 bg-white dark:bg-primary/5 p-4 rounded-xl border border-primary/10">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined">restaurant_menu</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Select Menu</h4>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-orange-100 dark:bg-orange-900/40 text-orange-600 uppercase">Medium</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">June 20, 2024</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">group</span>
+<span class="text-xs text-slate-400">150 Guests Expected</span>
+</div>
+</div>
+</div>
+<!-- Task Item 3: Low Priority -->
+<div class="flex gap-4 bg-white dark:bg-primary/5 p-4 rounded-xl border border-primary/10">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">music_note</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100">Confirm DJ</h4>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-600 uppercase">Low</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">July 05, 2024</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">person</span>
+<span class="text-xs text-slate-400">DJ Moonlight</span>
+</div>
+</div>
+</div>
+<!-- Task Item 4: Completed Example -->
+<div class="flex gap-4 bg-slate-50 dark:bg-slate-800/20 p-4 rounded-xl border border-slate-200 dark:border-slate-800 opacity-60">
+<div class="flex-shrink-0">
+<div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-slate-900 dark:text-slate-100 line-through">Send Invitations</h4>
+<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/40 text-green-600 uppercase">Done</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Completed May 30</p>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB -->
+<button class="fixed right-6 bottom-24 w-14 h-14 bg-primary text-white rounded-full shadow-lg shadow-primary/40 flex items-center justify-center z-30 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-background-dark border-t border-primary/10 px-4 py-2 z-40">
+<div class="flex justify-around items-center max-w-lg mx-auto">
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Dashboard</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">task_alt</span>
+<span class="text-[10px] font-bold">Checklist</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="text-[10px] font-medium">Vendors</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

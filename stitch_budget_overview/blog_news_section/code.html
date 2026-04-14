@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#221a7f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131220",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Planzo - Blog &amp; News</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Header Section -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-primary/20">
+<div class="flex items-center p-4 justify-between max-w-5xl mx-auto w-full">
+<div class="flex items-center gap-3">
+<div class="text-primary dark:text-slate-100 flex size-10 items-center justify-center rounded-lg bg-primary/10 dark:bg-primary/30">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Blog &amp; News</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+<!-- Category Tabs -->
+<div class="max-w-5xl mx-auto w-full px-4 overflow-x-auto no-scrollbar">
+<div class="flex gap-6">
+<a class="flex flex-col items-center justify-center border-b-2 border-primary text-primary dark:text-slate-100 pb-3 pt-4" href="#">
+<p class="text-sm font-bold whitespace-nowrap">All Stories</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Product Updates</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Lifestyle</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-2 border-transparent text-slate-500 dark:text-slate-400 pb-3 pt-4 hover:text-primary transition-colors" href="#">
+<p class="text-sm font-bold whitespace-nowrap">Success Stories</p>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Content Feed -->
+<main class="flex-1 max-w-5xl mx-auto w-full p-4 md:p-6 space-y-6">
+<!-- Featured Post -->
+<section class="@container">
+<div class="group flex flex-col items-stretch justify-start rounded-xl overflow-hidden @xl:flex-row @xl:items-center shadow-lg bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 transition-all hover:border-primary/40">
+<div class="w-full @xl:w-1/2 bg-center bg-no-repeat aspect-video bg-cover overflow-hidden" data-alt="Person writing in a clean minimal planner notebook on desk" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuADZJ79VQY9B7B-J2wyswbjFoj1Vn6iiPz6waba1fMcMOJ5clDJw975dcoP4tPzeYEpvXlnpn2z14cp0o9NXnWQQFF6Fjbu4q5WE6xHZ0XXQtojOpBp9lQ9ScQYS7zJHAWlTRT58odRRPOr8UIExRd6TP_goTNZ80kTj5NQY9Pt-6vif45_zYhsYruE2wbXYgjsZ70Za81hl4XWeXGhB3JmoPh_x6h9OmfnU5wL5u5APvMPC2-i-Fyuzb-OWMfHv0RPP6DQxxY7iRwf");'>
+</div>
+<div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-3 p-6">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider bg-primary text-white rounded">Featured</span>
+<span class="text-slate-500 dark:text-slate-400 text-xs">8 min read</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">The Ultimate Guide to Productive Mornings in 2024</h2>
+<p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-relaxed line-clamp-2">
+                        Transform your daily routine with these scientifically proven habits designed to maximize your focus and energy from the moment you wake up.
+                    </p>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">By Sarah Jenks</p>
+</div>
+<button class="flex items-center justify-center rounded-lg h-10 px-6 bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors">
+                            Read More
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Post Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Card 1 -->
+<div class="flex flex-col rounded-xl overflow-hidden bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 transition-all hover:shadow-md">
+<div class="w-full aspect-video bg-cover bg-center" data-alt="Abstract vibrant gradient colors representing smart technology" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYUXd8BN43eSBPc_wnDtARLoBwcmIMCpre6BGq7JpbDDzxWt13Ao4_8vdKWDNa_BWVU5jqk8HgQ5uFFP0oe0U4es6fGKt8mrGBxhK8zsDVDbLA17t3ZqyIIRmA-gBrAu6ZRFzwOnwMXhDWVS_N6sNgETR1QY3bvtESjqKX6cpgzyE7mCVnGePSPT-ZVN8O45ggebtM0NR__0d5AC-thCiGVZ9m6UacTpo1tZD8UvQGEiTRTyfAHlH_PHjePh2InHB7An2y7y5Dc4ee");'>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-primary dark:text-primary/80 text-xs font-bold uppercase">Product Updates</span>
+<span class="text-slate-400 text-xs italic">Jan 24, 2024</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">New Feature: Smart AI Reminders</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+                        Our latest update uses machine learning to suggest the best times for your deep work sessions based on your habits.
+                    </p>
+<button class="w-full mt-2 flex items-center justify-center rounded-lg h-9 bg-primary/10 dark:bg-primary/20 text-primary dark:text-slate-200 text-sm font-semibold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+                        Read full story
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="flex flex-col rounded-xl overflow-hidden bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 transition-all hover:shadow-md">
+<div class="w-full aspect-video bg-cover bg-center" data-alt="People collaborating in a modern office space" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA6zFMZjf7s8-sNaR47bRWSCbtFiVjguVwgv1SdkCx_pG_vO3boJ1Tv5zG5idpJFjXJLXKPR2YP-LvIusW_cixzBJJFAZUgQ1K4mMq2rPwJmhxJvLmZlUVLSPjnAW5qpP8W_ZV7dwWoO0FlzdhzqMEo7M8NJg9sY8wKWrAM4qsOmszs-kppbbvZdi4FxZKInhmE57CZxC3spIXV-yaKuFFNaJu46Z4pv0hI3MhvPZhhGdu4J_qA2t0k6se7irFS7Dw5IsoB3M6jEUzc");'>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-primary dark:text-primary/80 text-xs font-bold uppercase">Lifestyle</span>
+<span class="text-slate-400 text-xs italic">Jan 22, 2024</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Maintaining Work-Life Harmony</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+                        Simple strategies to disconnect from work and reclaim your personal time without feeling guilty or falling behind.
+                    </p>
+<button class="w-full mt-2 flex items-center justify-center rounded-lg h-9 bg-primary/10 dark:bg-primary/20 text-primary dark:text-slate-200 text-sm font-semibold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+                        Read full story
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex flex-col rounded-xl overflow-hidden bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 transition-all hover:shadow-md">
+<div class="w-full aspect-video bg-cover bg-center" data-alt="Coffee cup and laptop on wooden table background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCGiD-iIIusmLxm1twX_a88FIpmzt6tHOBeCDJkJJSW3kjOscGPbdzU7cfsE4hj2nEcWOu6FqEsTSeb5Tv6F2H2xGVci2i919HO_j8FsR4wLw1tBWjqWHngwSuz0O-rhqtcLk_6ysYzM_h00HQP19G41G5UJjYCSC-ROKUytDpZLIqGBXf8npsuFrtuB98wqx1DNozUsKmKW6qITLyQk6AIO-A8GfGgU4dZwM86zc5eblwOxoqfE3STlFascxEv-fTRH8P9sRhXpN7v");'>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-primary dark:text-primary/80 text-xs font-bold uppercase">Tips &amp; Tricks</span>
+<span class="text-slate-400 text-xs italic">Jan 20, 2024</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">10 Shortcuts You Didn't Know</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+                        Master Planzo like a pro with these hidden keyboard shortcuts and workflow hacks that save you hours weekly.
+                    </p>
+<button class="w-full mt-2 flex items-center justify-center rounded-lg h-9 bg-primary/10 dark:bg-primary/20 text-primary dark:text-slate-200 text-sm font-semibold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+                        Read full story
+                    </button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="flex flex-col rounded-xl overflow-hidden bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 transition-all hover:shadow-md">
+<div class="w-full aspect-video bg-cover bg-center" data-alt="Group of diverse people working together on a project" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZTg34hmHG0k8b0CH-JLdiP27w24b5Dm2HTHY2T9FIssLpOaT1AhCY_8s1cDBRk9jbaEJY4N-TZaFEkaXFIT5cF4ZNEDm3o4HrUD4pNlYauN2G9vVhMCItKN566Hyw49JbifjUMdEMGY4E0Ph44ImGV8rakk2bXKhKU6OajB73ENh0HR8uqsoi-AkRjNzQhPBW3VBVcXg1P8GRCprE18UEc7OvxDT8obWdtIRCDi2LuS_d600qDnlfCWA_zx7j2BhQS5cx0vHaruDc");'>
+</div>
+<div class="p-5 space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-primary dark:text-primary/80 text-xs font-bold uppercase">Success Stories</span>
+<span class="text-slate-400 text-xs italic">Jan 18, 2024</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">How TechFlow Scaled with Planzo</h3>
+<p class="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+                        See how a startup of 5 grew to a team of 50 while keeping their culture and deadlines intact using our tools.
+                    </p>
+<button class="w-full mt-2 flex items-center justify-center rounded-lg h-9 bg-primary/10 dark:bg-primary/20 text-primary dark:text-slate-200 text-sm font-semibold hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
+                        Read full story
+                    </button>
+</div>
+</div>
+</section>
+<!-- Load More Button -->
+<div class="flex justify-center py-8">
+<button class="flex items-center gap-2 px-8 py-3 rounded-full border border-primary text-primary dark:text-slate-100 font-bold hover:bg-primary hover:text-white transition-all">
+<span>View Older Posts</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 bg-white dark:bg-[#1e1d25] border-t border-slate-200 dark:border-primary/20 px-4 pb-6 pt-2">
+<div class="max-w-md mx-auto flex gap-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium leading-normal">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<p class="text-[10px] font-medium leading-normal">Planner</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary dark:text-white" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">newspaper</span>
+<p class="text-[10px] font-bold leading-normal">Blog</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-medium leading-normal">Profile</p>
+</a>
+</div>
+</nav>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

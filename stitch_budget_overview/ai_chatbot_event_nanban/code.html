@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#221a7f",
+                "background-light": "#f6f6f8",
+                "background-dark": "#0f172a",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<title>Event Nanban - AI Planner</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+<div class="max-w-4xl mx-auto flex items-center justify-between p-4">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined block text-slate-600 dark:text-slate-400">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold leading-none tracking-tight">Event Nanban</h1>
+<span class="text-xs text-green-500 font-medium flex items-center gap-1">
+<span class="size-1.5 rounded-full bg-green-500"></span> Online
+                    </span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined block text-slate-600 dark:text-slate-400">search</span>
+</button>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined block text-slate-600 dark:text-slate-400">more_vert</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Chat Container -->
+<main class="flex-1 overflow-y-auto p-4 space-y-6 max-w-4xl mx-auto w-full">
+<div class="flex flex-col items-center justify-center py-4">
+<span class="px-3 py-1 bg-slate-200 dark:bg-slate-800 rounded-full text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Today</span>
+</div>
+<!-- AI Message -->
+<div class="flex items-end gap-3 max-w-[85%]">
+<div class="size-10 shrink-0 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="flex flex-col gap-1 items-start">
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 ml-1">Event Nanban</p>
+<div class="px-4 py-3 rounded-2xl rounded-bl-none bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm">
+                    Hello! I'm your AI event planner. How can I help you plan your Planzo event today?
+                </div>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex items-end gap-3 justify-end ml-auto max-w-[85%]">
+<div class="flex flex-col gap-1 items-end">
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 mr-1">You</p>
+<div class="px-4 py-3 rounded-2xl rounded-br-none bg-primary text-white shadow-lg shadow-primary/20">
+                    I need some recommendations for vendors and budget tips for a wedding in New York.
+                </div>
+</div>
+<div class="size-10 shrink-0 rounded-full bg-slate-300 dark:bg-slate-700 overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="User profile avatar placeholder" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDOgvOdrq_lAmaLP3pcJKYPjpLVh45Epc5b-UwFcpVbaUd8tuFIPT-Qn7opkodGXZHNUj13Qbf0zhAzbev1CohqwODml7e5GxHSEwDrxhsQI-lwZohEM5RcOLMlMQgLZm1FK-9jBb8lXR3D4FClGUOL0lCRzuZDYyvN1APFPvoXVAij8JUkRWVMuPvQlPZgm0_omdBJczXrtxs2F9kpGgJhKoD12zfJfuqAs6NyMH8Q2kAwkQCm3H3lFdvtygKWrFLRdnfH-i6y8dvc')"></div>
+</div>
+</div>
+<!-- AI Message with Cards -->
+<div class="flex items-end gap-3 max-w-full">
+<div class="size-10 shrink-0 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="flex flex-1 flex-col gap-4 items-start">
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 ml-1">Event Nanban</p>
+<div class="px-4 py-3 rounded-2xl rounded-bl-none bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 shadow-sm w-fit">
+                    Sure! Based on your preference for New York, here are some top-rated vendors and a preliminary budget breakdown for a 100-guest wedding.
+                </div>
+<!-- Recommended Vendors Scrollable -->
+<div class="w-full">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-500">Recommended Vendors</h3>
+<button class="text-primary text-xs font-bold">View All</button>
+</div>
+<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+<!-- Vendor Card 1 -->
+<div class="min-w-[240px] bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden p-3">
+<div class="h-32 rounded-lg bg-cover bg-center mb-3" data-alt="Luxurious wedding venue interior" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhvoiCUFccaGhluOPwBD2IL7i5i71PHIVhiUk0ERU9iY9nN0rJTPQeBwoafICr-KT1OGplFIa3fTjL50NdeYpwapI5NdopZfjw_0dwTnMwifDwC0u0Pq5v8p7TsedZlmZNZNd5T-LQa9XkgjCgO6HZvLO6jVKattV0ZV2Gvlv_YpVR-mprRqSf3KI9XX80XohC0R95KST7Mw6bbtSS9PiIBYptbOcWcfkElW0OKdXcX6FdVqw1q-9MHtX1ROm14_mcqWDfzws2uJZB')"></div>
+<div class="space-y-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-sm">Grand Plaza Hall</h4>
+<div class="flex items-center text-yellow-500 text-xs">
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+<span class="ml-0.5">4.9</span>
+</div>
+</div>
+<p class="text-xs text-slate-500">Venue &amp; Catering</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-primary font-bold text-sm">$12,000+</span>
+<span class="text-[10px] px-2 py-0.5 bg-green-500/10 text-green-500 rounded-full font-bold">AVAILABLE</span>
+</div>
+</div>
+</div>
+<!-- Vendor Card 2 -->
+<div class="min-w-[240px] bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden p-3">
+<div class="h-32 rounded-lg bg-cover bg-center mb-3" data-alt="Professional wedding photography gear setup" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5GJzwIDIpgKDaj1LF8oFCv1NDkuPuxESL0zYv5OHWAitW3aUcILJe12Avur31fUscLqo68-pAA4UE4BTvpK3VHdQmX6nWQz65Y-KIdU84zD-kVXCL9K5Ogqihapr07clw6cTp8t2lFjWGKewn1Jp0ppJIeY20O4Ap9ynzgdZ63m2ZqGvo3Wo_oOkw93ePYBk3Zxsh-ItkHqQKq3MVo0f2J8PIAvHSLcD_EpWNNNP2GJ9CsZhh8i32m3DXHansBPHQCxtlzLivjYPx')"></div>
+<div class="space-y-1">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-sm">Silver Lens Media</h4>
+<div class="flex items-center text-yellow-500 text-xs">
+<span class="material-symbols-outlined text-[14px] fill-current">star</span>
+<span class="ml-0.5">4.8</span>
+</div>
+</div>
+<p class="text-xs text-slate-500">Photography</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-primary font-bold text-sm">$3,500+</span>
+<span class="text-[10px] px-2 py-0.5 bg-red-500/10 text-red-500 rounded-full font-bold">LIMITED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Budget & Availability Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+<!-- Budget Card -->
+<div class="bg-primary/10 border border-primary/20 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+<h4 class="font-bold text-sm">Budget Estimation</h4>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs">
+<span class="text-slate-500">Total Est.</span>
+<span class="font-bold">$25,000 - $32,000</span>
+</div>
+<div class="w-full bg-slate-300 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<p class="text-[11px] text-slate-500 leading-tight">Prices are based on average New York market rates for Summer 2024.</p>
+</div>
+</div>
+<!-- Availability Card -->
+<div class="bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-slate-500">event_available</span>
+<h4 class="font-bold text-sm">Vendor Availability</h4>
+</div>
+<ul class="space-y-2">
+<li class="flex items-center justify-between text-xs">
+<span class="text-slate-600 dark:text-slate-400">Venues</span>
+<span class="text-yellow-500 font-medium">60% Booked</span>
+</li>
+<li class="flex items-center justify-between text-xs">
+<span class="text-slate-600 dark:text-slate-400">Caterers</span>
+<span class="text-green-500 font-medium">Wide Open</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Input Bar -->
+<footer class="p-4 bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-4xl mx-auto flex items-end gap-3">
+<div class="flex-1 relative">
+<textarea class="w-full bg-slate-100 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pr-12 text-sm focus:ring-primary focus:border-primary resize-none transition-all placeholder:text-slate-500 dark:placeholder:text-slate-400" placeholder="Ask Event Nanban anything..." rows="1"></textarea>
+<button class="absolute right-3 bottom-3 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+</div>
+<button class="size-11 flex items-center justify-center bg-primary text-white rounded-xl shadow-lg shadow-primary/30 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+<p class="text-center text-[10px] text-slate-500 dark:text-slate-600 mt-2">
+            Planzo AI can make mistakes. Verify important information with vendors.
+        </p>
+</footer>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

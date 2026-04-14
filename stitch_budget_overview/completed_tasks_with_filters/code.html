@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#221a7f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131220",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<header class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-primary/20 px-4 py-4">
+<div class="flex items-center justify-between max-w-2xl mx-auto w-full">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight">Completed Tasks</h1>
+</div>
+<button class="text-primary font-medium text-sm">Clear All</button>
+</div>
+</header>
+<main class="flex-1 max-w-2xl mx-auto w-full px-4 pb-24">
+<div class="py-6 space-y-4">
+<div class="flex items-center gap-3">
+<label class="relative flex-1 group">
+<span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</span>
+<input class="block w-full rounded-xl border-none bg-slate-100 dark:bg-primary/10 py-3 pl-12 pr-4 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-primary text-base transition-all" name="search" placeholder="Search completed tasks" type="text"/>
+</label>
+<button class="flex items-center justify-center size-12 rounded-xl bg-slate-100 dark:bg-primary/10 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 text-sm font-medium whitespace-nowrap hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors">
+<span>Category</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 text-sm font-medium whitespace-nowrap hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors">
+<span>Date</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 text-sm font-medium whitespace-nowrap hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors">
+<span>Vendor</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<section class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-bold">This Week</h2>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-emerald-500/10 text-emerald-500 uppercase tracking-wider">2 Done</span>
+</div>
+<div class="space-y-4">
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-xl overflow-hidden shadow-sm">
+<div class="aspect-video w-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center" data-alt="Gourmet catering food display on a table" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBC9M4UOkKIa3jSwBw-5DkL5YMSfZRcXqAe2aquXrtOXmw7rZbJlZy0n78Fi_NNr0DycIk0J1paTAsdos2y8tYkAWmfBetjddT7AmPvogKbUH-d1lrkqr7sORK_Ezs7WpdaXQEyHYONZdVRTvL-II0EeT93ew1aDeXj27jM7aSMsecdfE4RzMu1aIKAyHieZt61JleKoxY7_AhSeEnuyeIfKTdGUb6BowQRFSTmZaoZvsvxOJfD7IUj22eeoaT7f1wbyGMsM4uiTGJ9')">
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<span class="text-xs font-medium text-primary uppercase tracking-wide">Catering</span>
+<h3 class="text-lg font-bold mt-0.5">Finalize Catering Menu</h3>
+</div>
+<span class="inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-bold text-emerald-500">
+                                DONE
+                            </span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4">
+                            Completed Oct 24 • Gourmet Delights Vendor
+                        </p>
+<button class="w-full py-2.5 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                            View Details
+                        </button>
+</div>
+</div>
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-xl overflow-hidden shadow-sm">
+<div class="aspect-video w-full bg-slate-200 dark:bg-slate-800 bg-cover bg-center" data-alt="Elegant grand ballroom event venue setup" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA3fkGblMcz5OH6psrnrdy40t7XtwR2Xm2r5RbU_Qiqueh07Xmt1l6t13ebT9Gj_gSeCIeik1EhDp0jRb5TV_MBrUzkor33s_mjAovFdarOLpAnzTl00v6FngCqJe3A2p2Jvy_osQsJ_IctziwBLz_7p8oxurvPvXfD2Zs6pyK_PoYUoU-64g2l2E-WHOvGqvlwYg3MjB0qrQBpujjzkVH5AldcReF3XfQOrfpcScwd-hcmoiZzQlBpH05e5Hg8tjCef77_2TTuFF-V')">
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<span class="text-xs font-medium text-primary uppercase tracking-wide">Venue</span>
+<h3 class="text-lg font-bold mt-0.5">Sign Venue Contract</h3>
+</div>
+<span class="inline-flex items-center rounded-full bg-emerald-500/10 px-2 py-1 text-xs font-bold text-emerald-500">
+                                DONE
+                            </span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mb-4">
+                            Completed Oct 22 • The Grand Plaza
+                        </p>
+<button class="w-full py-2.5 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                            View Details
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<section class="mb-8">
+<h2 class="text-lg font-bold mb-4">Last Month</h2>
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/20 rounded-xl divide-y divide-slate-100 dark:divide-primary/10 overflow-hidden shadow-sm">
+<div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center">
+<span class="material-symbols-outlined">palette</span>
+</div>
+<div>
+<h4 class="font-semibold text-sm">Confirm Decoration Theme</h4>
+<p class="text-xs text-slate-500">Sep 28, 2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined">local_activity</span>
+</div>
+<div>
+<h4 class="font-semibold text-sm">Print Entry Tickets</h4>
+<p class="text-xs text-slate-500">Sep 15, 2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-pink-500/10 text-pink-500 flex items-center justify-center">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<h4 class="font-semibold text-sm">Guest List Finalized</h4>
+<p class="text-xs text-slate-500">Sep 10, 2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-primary/10 transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-lg bg-cyan-500/10 text-cyan-500 flex items-center justify-center">
+<span class="material-symbols-outlined">speaker</span>
+</div>
+<div>
+<h4 class="font-semibold text-sm">AV Equipment Rental</h4>
+<p class="text-xs text-slate-500">Sep 05, 2023</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-400">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/90 backdrop-blur-lg border-t border-slate-200 dark:border-primary/20 z-50">
+<div class="flex items-center justify-around max-w-2xl mx-auto h-20 px-4">
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined material-symbols-fill">task_alt</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Tasks</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Vendors</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

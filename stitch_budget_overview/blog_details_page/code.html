@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#221a7f",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131220",
+            },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<title>Blog Details - Planzo</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Header Nav -->
+<nav class="sticky top-0 z-50 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-primary/20">
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">arrow_back</span>
+</button>
+</div>
+<h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-tight flex-1 text-center">Blog Post</h2>
+<div class="flex items-center gap-2">
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">share</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">bookmark</span>
+</button>
+</div>
+</nav>
+<main class="flex-1 max-w-4xl mx-auto w-full">
+<!-- Hero Image Section -->
+<div class="@container px-0 sm:px-4 py-0 sm:py-6">
+<div class="relative w-full aspect-video bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden sm:rounded-xl shadow-2xl" data-alt="Modern workspace with productivity planning tools and notebooks" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAfFITurAlcl2M2njeI8dg-16Gv2xASIr_0RixfewQwgeW7yuhIw3S_wGZRLTRsClw_SF5DIpih5lysrfgZiL4GFezLVutXk2lNpWAWXNahabq3CHKz__QIlaJW4fFWuTP9nCwB4sM6QcNNl65VrB29YaXSrVnlv2GDz0loncDqCbjUULb5765vpBG-jLNQg2PfDbLYNV1WeJMRTEiprD_xCszuFmStBO-vQGXOX7cngJKWL6sNcAtKOh5LvG6XNJhfECo8WA7dedkG");'>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent"></div>
+</div>
+</div>
+<!-- Content Header -->
+<div class="px-6 pt-8 pb-4">
+<div class="flex items-center gap-2 mb-4">
+<span class="px-3 py-1 text-xs font-bold tracking-wider uppercase bg-primary text-white rounded-full">Productivity</span>
+<span class="text-slate-500 dark:text-slate-400 text-sm font-medium">5 min read</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-100 tracking-tight text-3xl sm:text-5xl font-extrabold leading-tight mb-6">
+                    The Future of Productivity with Planzo: A New Era
+                </h1>
+<!-- Author Info -->
+<div class="flex items-center gap-4 bg-slate-100 dark:bg-primary/10 p-4 rounded-xl border border-slate-200 dark:border-primary/20">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-12 w-12 ring-2 ring-primary/30" data-alt="Profile portrait of Alex Rivers author" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBVKmXSCbNXZMFvBHLnKFjDPbl_T5VWHMkm4r-ON6Bkjx1PnDl5GC5AhVG8e58GtmRjqE6IObivlAEbiw0CLSR0zRzyvUx3w_lJhaxCxN1uEaQfiPFjeQLOPEcNP6PozxHLV4bEGPY-4iiQFzWHV345NmqxdEn6mgyrUvddwXGEDHCun2c7FcLI5Uj2HiUU1oyAbg_DnNZm2mPKTmutTQvPnxbVKatbcxR2RZD1orQ2kx8ESnfyqPbe55hJBOp1sQpYHn3THYe25drs");'></div>
+<div class="flex flex-col flex-1">
+<p class="text-slate-900 dark:text-slate-100 text-base font-bold leading-none">Alex Rivers</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal mt-1">Productivity Strategist • Oct 24, 2023</p>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">
+                        Follow
+                    </button>
+</div>
+</div>
+<!-- Blog Post Body -->
+<article class="px-6 py-8 prose prose-slate dark:prose-invert max-w-none">
+<p class="text-lg leading-relaxed text-slate-700 dark:text-slate-300 mb-6 font-medium">
+                    The way we work is fundamentally changing. As the boundaries between digital and physical workspaces blur, the tools we use to manage our time must evolve beyond simple checklists.
+                </p>
+<p class="text-base leading-relaxed text-slate-600 dark:text-slate-400 mb-6">
+                    Planzo represents more than just another task manager; it's a philosophy of intentional living. In this deep dive, we explore how our latest AI-driven updates are helping users reclaim an average of 10 hours per week by automating the mundane and focusing on the meaningful.
+                </p>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4 flex items-center gap-2">
+<span class="size-2 bg-primary rounded-full"></span>
+                    The Cognitive Load Problem
+                </h2>
+<p class="text-base leading-relaxed text-slate-600 dark:text-slate-400 mb-6">
+                    Psychologists have long noted that "decision fatigue" is the silent killer of productivity. When you start your day wondering what to do first, you've already lost. Planzo's Smart Prioritization engine analyzes your habits, energy levels, and deadlines to suggest the perfect starting point.
+                </p>
+<div class="my-10 bg-gradient-to-br from-primary/20 to-primary/5 p-8 rounded-xl border-l-4 border-primary italic">
+<span class="material-symbols-outlined text-primary mb-4 block">format_quote</span>
+<p class="text-xl text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
+                        "Productivity isn't about doing more things. It's about doing the right things at the right time with the right energy."
+                    </p>
+</div>
+<h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-10 mb-4">Integrations That Actually Work</h2>
+<p class="text-base leading-relaxed text-slate-600 dark:text-slate-400 mb-6">
+                    We've expanded our ecosystem to include seamless sync with over 200 professional tools. Whether you're a developer pushing code to GitHub or a designer managing assets in Figma, Planzo acts as your central command center.
+                </p>
+<ul class="space-y-4 mb-8">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span class="text-slate-600 dark:text-slate-400">Real-time calendar bi-directional sync</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span class="text-slate-600 dark:text-slate-400">Natural language task entry across all devices</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span class="text-slate-600 dark:text-slate-400">Offline-first architecture for uninterrupted focus</span>
+</li>
+</ul>
+</article>
+<!-- Tags & Actions -->
+<div class="px-6 pb-12">
+<div class="flex flex-wrap gap-2 mb-8">
+<a class="px-3 py-1 bg-slate-200 dark:bg-primary/20 text-slate-700 dark:text-slate-300 rounded text-sm hover:bg-primary/30 transition-colors" href="#">#Efficiency</a>
+<a class="px-3 py-1 bg-slate-200 dark:bg-primary/20 text-slate-700 dark:text-slate-300 rounded text-sm hover:bg-primary/30 transition-colors" href="#">#WorkLife</a>
+<a class="px-3 py-1 bg-slate-200 dark:bg-primary/20 text-slate-700 dark:text-slate-300 rounded text-sm hover:bg-primary/30 transition-colors" href="#">#AI</a>
+</div>
+<div class="flex items-center justify-between border-t border-slate-200 dark:border-primary/20 pt-8">
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-bold">2.4k</span>
+</button>
+<button class="flex items-center gap-2 text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mode_comment</span>
+<span class="font-bold">42</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<div class="sticky bottom-0 z-50 flex gap-2 border-t border-slate-200 dark:border-primary/20 bg-background-light dark:bg-background-dark px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">home</span>
+</div>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</div>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<div class="flex h-10 w-10 bg-primary text-white rounded-full items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined">add</span>
+</div>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">menu_book</span>
+</div>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</div>
+</a>
+</div>
+</div>
+</body></html>

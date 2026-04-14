@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#221a7f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131220",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<title>Planzo - Vendor Categories</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<!-- Header Navigation -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-primary/20">
+<div class="flex items-center p-4 justify-between max-w-5xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="text-slate-900 dark:text-slate-100 flex items-center justify-center cursor-pointer hover:bg-slate-200 dark:hover:bg-primary/30 p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Vendor Categories</h1>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-full size-10 bg-slate-200 dark:bg-primary/20 hover:bg-slate-300 dark:hover:bg-primary/40 transition-colors">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<button class="flex items-center justify-center rounded-full size-10 bg-slate-200 dark:bg-primary/20 hover:bg-slate-300 dark:hover:bg-primary/40 transition-colors">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-5xl mx-auto pb-24">
+<!-- Hero Selection -->
+<section class="px-4 py-6">
+<div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-indigo-900 p-8 text-white mb-8">
+<div class="relative z-10 max-w-md">
+<h2 class="text-3xl font-bold mb-2">Find your perfect team</h2>
+<p class="text-indigo-100">Browse through our curated list of professional vendors for your next big event.</p>
+</div>
+<div class="absolute -right-8 -bottom-8 opacity-20">
+<span class="material-symbols-outlined text-[160px]">celebration</span>
+</div>
+</div>
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold">Browse by Service</h3>
+<span class="text-sm font-medium text-primary dark:text-indigo-400">View All</span>
+</div>
+<!-- Categories Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Category Card: Photography -->
+<div class="group relative flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 hover:border-primary dark:hover:border-primary/60 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="size-14 flex items-center justify-center rounded-xl bg-primary/10 dark:bg-primary text-primary dark:text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">photo_camera</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-primary/40">arrow_forward_ios</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Photography</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">120 Vendors available</p>
+</div>
+<div class="absolute inset-0 rounded-xl overflow-hidden opacity-0 group-hover:opacity-5">
+<div class="w-full h-full bg-primary" data-alt="Subtle primary color background pattern"></div>
+</div>
+</div>
+<!-- Category Card: Catering -->
+<div class="group relative flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 hover:border-primary dark:hover:border-primary/60 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="size-14 flex items-center justify-center rounded-xl bg-primary/10 dark:bg-primary text-primary dark:text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">restaurant</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-primary/40">arrow_forward_ios</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Catering</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">85 Vendors available</p>
+</div>
+</div>
+<!-- Category Card: Decoration -->
+<div class="group relative flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 hover:border-primary dark:hover:border-primary/60 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="size-14 flex items-center justify-center rounded-xl bg-primary/10 dark:bg-primary text-primary dark:text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">deck</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-primary/40">arrow_forward_ios</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Decoration</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">150 Vendors available</p>
+</div>
+</div>
+<!-- Category Card: Venue -->
+<div class="group relative flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 hover:border-primary dark:hover:border-primary/60 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="size-14 flex items-center justify-center rounded-xl bg-primary/10 dark:bg-primary text-primary dark:text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">location_on</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-primary/40">arrow_forward_ios</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Venue</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">40 Vendors available</p>
+</div>
+</div>
+<!-- Category Card: Makeup Artist -->
+<div class="group relative flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 hover:border-primary dark:hover:border-primary/60 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="size-14 flex items-center justify-center rounded-xl bg-primary/10 dark:bg-primary text-primary dark:text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">face_retouching_natural</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-primary/40">arrow_forward_ios</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Makeup Artist</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">95 Vendors available</p>
+</div>
+</div>
+<!-- Category Card: Entertainment -->
+<div class="group relative flex flex-col gap-4 p-5 rounded-xl border border-slate-200 dark:border-primary/20 bg-white dark:bg-primary/5 hover:border-primary dark:hover:border-primary/60 transition-all cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="size-14 flex items-center justify-center rounded-xl bg-primary/10 dark:bg-primary text-primary dark:text-white group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">music_note</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 dark:text-primary/40">arrow_forward_ios</span>
+</div>
+<div>
+<h4 class="text-lg font-bold">Entertainment</h4>
+<p class="text-sm text-slate-500 dark:text-slate-400">60 Vendors available</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Section (Additional UI Element) -->
+<section class="px-4 py-2">
+<h3 class="text-lg font-bold mb-4">Trending Collections</h3>
+<div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+<div class="flex-shrink-0 w-64 h-40 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30" data-alt="Luxury wedding venue interior decoration" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBsXKFGB1ojElM0sFbwIiIGcEIPCS_HZ0hRM1URYAF49kGMuhRedvyL30DfgjiwAc-OWOOC3or4iQT-WfejfoyyTTKPZTxKUjq9MaDhmXBk-Pu3ZkOwFXXxkD_dCoaTlqoUi2QPZQtybHM8uL9hUCU0b2BDPsJJB0dSz2oHBqB5wcyJftkH6G1FwQTGxLHKdOPGPcVgTugyt3fAAxUA3ALHNluvFavKSM3nYGutvzn94Sp7NKOVPfgMOnn3HjK1EPQfu_JTN6_IrRuH')"></div>
+<p class="relative z-10 font-bold text-lg">Luxury Weddings</p>
+</div>
+<div class="flex-shrink-0 w-64 h-40 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30" data-alt="Modern corporate event stage setup" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDg-oFQCINfkJ2fEZBXxRpBw4Bgjiyyw7PWhe40rpwAwjFzJTdC84JOwhPhGNV2gTTevg1G5PZIxjFM7jumOe2c7bXU3KYMXYWg9xhFJIVUpQE5063iH5aHv0KsGjNjSo0EIkPa3lNv7-gKVbWjfQPua83kfBsDEwfhpr1J50ix3BHFn6rygs9n-OK1cgAWbu6stZ7IrWDh0c-fIZjL28rCHGsnD9wPiUEuKRoEOKiMy5cXHoQs5QpkWdbNnMuHKwfk9c8smVzqiiI')"></div>
+<p class="relative z-10 font-bold text-lg">Corporate Galas</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-background-light dark:bg-[#1e1d25] border-t border-slate-200 dark:border-primary/20 px-4 pb-6 pt-2">
+<div class="max-w-md mx-auto flex justify-between">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-indigo-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<p class="text-[10px] font-medium">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary dark:text-white" href="#">
+<span class="material-symbols-outlined fill-1">grid_view</span>
+<p class="text-[10px] font-medium">Categories</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-indigo-400" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<p class="text-[10px] font-medium">Bookings</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-indigo-400" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<p class="text-[10px] font-medium">Saved</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-indigo-400" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-[10px] font-medium">Profile</p>
+</a>
+</div>
+</nav>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .fill-1 {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</body></html>

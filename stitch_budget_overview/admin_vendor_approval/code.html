@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Planzo Admin - Vendor Approval</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#221a7f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131220",
+                        "success": "#10b981",
+                        "error": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 border-b border-slate-200 dark:border-primary/20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center justify-between p-4 max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">arrow_back</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight">Vendor Approval</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Planzo Admin Dashboard</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="relative p-2 rounded-full hover:bg-slate-200 dark:hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-error"></span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-xs" data-alt="Admin user profile avatar placeholder">
+                    AD
+                </div>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl mx-auto w-full p-4 space-y-8">
+<!-- Stats Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Pending</p>
+<span class="material-symbols-outlined text-amber-500">pending_actions</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-3xl font-bold">24</p>
+<p class="text-success text-sm font-medium leading-normal">+5%</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Approved</p>
+<span class="material-symbols-outlined text-success">check_circle</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-3xl font-bold">142</p>
+<p class="text-error text-sm font-medium leading-normal">-2%</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Rejected</p>
+<span class="material-symbols-outlined text-error">cancel</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<p class="text-3xl font-bold">12</p>
+<p class="text-error text-sm font-medium leading-normal">-1%</p>
+</div>
+</div>
+</section>
+<!-- Main Content List -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h2 class="text-lg font-bold">Pending Applications</h2>
+<div class="flex items-center gap-2 bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="text-sm font-medium">Filter</span>
+</div>
+</div>
+<!-- Vendor Card 1 -->
+<div class="@container">
+<div class="flex flex-col @md:flex-row items-stretch gap-4 rounded-xl bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 p-4 shadow-sm">
+<div class="w-full @md:w-48 h-32 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" data-alt="Fresh organic produce on a wooden table display" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAvnpwQz_u4KVt7_Q6nupfHWelSu1jdxAcPq55bW35m81Eyru5w9j7AApVaqWP-sjubV1yqVULdr97m-tht80S27OALzKgrOnO4kVSvqzdJvDjYOzuOwuhWhfH8DKEHOIohflpVFzjyotF-XfM_5PNzkALFISrFEptNsZ7zhco5CjLgOcThKoGJyDMCtSH4UvTwg__UGuqIsSY1WlUGB72tvo1h-KxGkbSFnvEt6if-cbsKv409z-2C9S-x-fykajFUpGd0ut2DU46U");'></div>
+<div class="flex grow flex-col justify-between py-1">
+<div>
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold">Organic Farms Co.</h3>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">Awaiting Review</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Category: <span class="text-slate-800 dark:text-slate-200">Grocery</span> • Location: <span class="text-slate-800 dark:text-slate-200">San Francisco, CA</span></p>
+<div class="flex items-center gap-2 mt-3">
+<span class="material-symbols-outlined text-primary text-sm">description</span>
+<a class="text-primary text-sm font-semibold underline underline-offset-4 hover:text-primary/80 transition-colors" href="#">3 Documents Submitted</a>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-4 @md:mt-0 @md:justify-end">
+<button class="flex-1 @md:flex-none px-4 py-2 rounded-lg bg-error text-white text-sm font-bold hover:bg-error/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">close</span>
+                                Reject Vendor
+                            </button>
+<button class="flex-1 @md:flex-none px-4 py-2 rounded-lg bg-success text-white text-sm font-bold hover:bg-success/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">check</span>
+                                Approve Vendor
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Vendor Card 2 -->
+<div class="@container">
+<div class="flex flex-col @md:flex-row items-stretch gap-4 rounded-xl bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 p-4 shadow-sm">
+<div class="w-full @md:w-48 h-32 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" data-alt="Artisanal bakery with fresh bread loaves" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1RGp3h04ctr_SicANU0DJFwvTOvcSs23W_MuxppY5B_uM4M38P9qAncojGC3C8vRpkjfZeBs4Nairuv3ULbyC2Dra8AeuZRnBakmA1cB8s_JSchpKZ_nzi1zf91-XjJtOjAjIqTdXCr-n1A6LtCROnMZelYZYQhzgh6-HJgSCmwte3RdxtXNoD6y7pQ5Lu7x9S6_rxZnTvDAuQw4qgvkNL7WW7LYYXU17O-qX6U8hL0L-3VptJFSSihl_afRD5dcMhMNjsZDP9zmG");'></div>
+<div class="flex grow flex-col justify-between py-1">
+<div>
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold">The Daily Crust</h3>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">Awaiting Review</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Category: <span class="text-slate-800 dark:text-slate-200">Bakery</span> • Location: <span class="text-slate-800 dark:text-slate-200">Brooklyn, NY</span></p>
+<div class="flex items-center gap-2 mt-3">
+<span class="material-symbols-outlined text-primary text-sm">description</span>
+<a class="text-primary text-sm font-semibold underline underline-offset-4 hover:text-primary/80 transition-colors" href="#">5 Documents Submitted</a>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-4 @md:mt-0 @md:justify-end">
+<button class="flex-1 @md:flex-none px-4 py-2 rounded-lg bg-error text-white text-sm font-bold hover:bg-error/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">close</span>
+                                Reject Vendor
+                            </button>
+<button class="flex-1 @md:flex-none px-4 py-2 rounded-lg bg-success text-white text-sm font-bold hover:bg-success/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">check</span>
+                                Approve Vendor
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Vendor Card 3 -->
+<div class="@container">
+<div class="flex flex-col @md:flex-row items-stretch gap-4 rounded-xl bg-white dark:bg-primary/10 border border-slate-200 dark:border-primary/20 p-4 shadow-sm">
+<div class="w-full @md:w-48 h-32 bg-center bg-no-repeat bg-cover rounded-lg shrink-0" data-alt="Local farmer market with colorful vegetables" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7iNqfkc6_PdLMvSNscGdB4R7gjoFxnBis1rELzyZuSbOHGuuk7VLhKPG5CP7IIRISFQ5chitN_5UYtjilwVL72WWM_qPXXkCgqvH_LsNGV3yq9iHSagCeoOEKci1Lr9jnQLGHv04ViNiOCWKoD0OavXIhknYQHZyAEcgYKAKB-a9GKGqKol0i1lEbCSW1Lnpmj4wuEf5Hoi607rpB3PpJN6H1XTlsEmajzqflmXXiWAAN0AizxAE01hmYyrhbE9I1X7MEW2-g_5zL");'></div>
+<div class="flex grow flex-col justify-between py-1">
+<div>
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold">Sunrise Harvest</h3>
+<span class="text-xs font-semibold px-2 py-1 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">Awaiting Review</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Category: <span class="text-slate-800 dark:text-slate-200">Produce</span> • Location: <span class="text-slate-800 dark:text-slate-200">Austin, TX</span></p>
+<div class="flex items-center gap-2 mt-3">
+<span class="material-symbols-outlined text-primary text-sm">description</span>
+<a class="text-primary text-sm font-semibold underline underline-offset-4 hover:text-primary/80 transition-colors" href="#">2 Documents Submitted</a>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-4 @md:mt-0 @md:justify-end">
+<button class="flex-1 @md:flex-none px-4 py-2 rounded-lg bg-error text-white text-sm font-bold hover:bg-error/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">close</span>
+                                Reject Vendor
+                            </button>
+<button class="flex-1 @md:flex-none px-4 py-2 rounded-lg bg-success text-white text-sm font-bold hover:bg-success/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">check</span>
+                                Approve Vendor
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="sticky bottom-0 w-full border-t border-slate-200 dark:border-primary/20 bg-white dark:bg-background-dark px-4 pb-4 pt-2 flex items-center justify-around z-50">
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Dashboard</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<p class="text-[10px] font-bold leading-normal tracking-wide">Vendors</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Analytics</p>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Settings</p>
+</a>
+</nav>
+</body></html>

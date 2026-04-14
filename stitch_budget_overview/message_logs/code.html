@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#221a7f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131220",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Message Logs - Event Manager</title>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto overflow-x-hidden border-x border-slate-200 dark:border-slate-800">
+<!-- Top Bar -->
+<header class="sticky top-0 z-10 flex items-center bg-background-light dark:bg-background-dark/95 backdrop-blur-md p-4 justify-between border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold leading-tight tracking-tight">Message Logs</h1>
+</div>
+<div class="flex items-center">
+<button class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto pb-24">
+<!-- Stats Section -->
+<div class="grid grid-cols-3 gap-3 p-4">
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Total</p>
+<p class="text-xl font-bold leading-tight">1,284</p>
+<p class="text-emerald-500 text-xs font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-sm">trending_up</span> +5%
+                    </p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Sent</p>
+<p class="text-xl font-bold leading-tight">1,240</p>
+<p class="text-orange-500 text-xs font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-sm">trending_flat</span> 0%
+                    </p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-4 bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider">Failed</p>
+<p class="text-xl font-bold leading-tight">12</p>
+<p class="text-red-500 text-xs font-medium flex items-center gap-0.5">
+<span class="material-symbols-outlined text-sm">trending_down</span> -2%
+                    </p>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 p-4 overflow-x-auto no-scrollbar scroll-smooth">
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-primary text-white px-5 text-sm font-semibold">All</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-5 text-sm font-medium border border-slate-200 dark:border-slate-700">Email</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-5 text-sm font-medium border border-slate-200 dark:border-slate-700">SMS</button>
+<button class="flex h-9 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-5 text-sm font-medium border border-slate-200 dark:border-slate-700">WhatsApp</button>
+</div>
+<!-- List Header -->
+<div class="px-4 py-2">
+<h3 class="text-sm font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400">Recent Activity</h3>
+</div>
+<!-- Log List -->
+<div class="flex flex-col divide-y divide-slate-200 dark:divide-slate-800 px-4">
+<!-- Log Item 1 -->
+<div class="flex items-center gap-4 py-4">
+<div class="relative">
+<img alt="Profile" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a young man smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpp8NkhDXt5lExu8pklX_UnJ8LW-zGwoN2gAE4wg1MhU5mHv7nGWul6IpWRBpgW4CD84A-7yZFflkSsNe68MX7XZ8_jSbfEotFnV2Xwyk2GDYincxeNhIZXFMYGPPinAwpHtmg3qcK7hVM1_EGFRUW6NeRcUnOD7er2ecDg2tDA_CJ6V4c8P5RgFUNKKFLGTwnNt5swyh1t8aSFLjRN8DWR2g3oUncIuRwIqfnLGaMIoE2Qw5k_8wQoTYYx7kMRIH9ReMvaesR-4-l"/>
+<div class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 border-2 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">mail</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center justify-between">
+<p class="font-bold">Alex Rivers</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">2 hours ago</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Your invitation for the Gala is ready...</p>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-emerald-500">Delivered</span>
+</div>
+</div>
+</div>
+<!-- Log Item 2 -->
+<div class="flex items-center gap-4 py-4">
+<div class="relative">
+<img alt="Profile" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a woman with curly hair" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9sulcMWfMHerYCgA8uyDuStbNsfDZEhYmiUub3W1kQ6qc8Vo6IZZ3jPRKs9cngCqGPuuRDJ7Uu-EdChBvsI_3OKPKA4ODfzXF9Prgmr46bdg-aMc2zZ8-KpHOiMbCDUh3I6THlsyA6fDtd2UEeW5HBr4sNCbTO_f1BZHcRWMRt9qwQq6SobQ3sV8bxTgtUjHJTS6U90C9BfzW9N8nfNbi2kPmrhWii9z0LXD6P3v31PvM18TmY8zqQawwmvPh8wvPi__AWF-D-aR9"/>
+<div class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 border-2 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">chat</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center justify-between">
+<p class="font-bold">Sarah Jenkins</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">4 hours ago</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Can you confirm your dietary requirements?</p>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="flex h-1.5 w-1.5 rounded-full bg-orange-500"></span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-orange-500">Pending</span>
+</div>
+</div>
+</div>
+<!-- Log Item 3 -->
+<div class="flex items-center gap-4 py-4">
+<div class="relative">
+<div class="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="text-primary font-bold">MJ</span>
+</div>
+<div class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-600 border-2 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">forum</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center justify-between">
+<p class="font-bold">Michael Jordan</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Oct 24</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Hi Michael! The location has been updated to...</p>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="flex h-1.5 w-1.5 rounded-full bg-red-500"></span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-red-500">Failed</span>
+</div>
+</div>
+</div>
+<!-- Log Item 4 -->
+<div class="flex items-center gap-4 py-4">
+<div class="relative">
+<img alt="Profile" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a bearded man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRx2F-vyMwBTz1QyR8V_tyN74Hm8DRddWoiZGLc6BuAH0zrdL6qP-dfc1PqEBzAYu9wcVnXlc_4XpyiexUKaGdfnb2ieBWqf873gaL8SgZS77FIGJtxdLRWV1CaZF8D8tC4AXPUT8YTl4PGurmfjaBNQqxb36Sqnbecz630FIIY37qAj9DLpbiI0yXXAcYaLFWv3y0-aLipyKvaPGFlKrQK9My_-pGJjXhhNLDtXj3ydA6XJMONPNcmrnYPdBcvp86p-16X1ucJnqR"/>
+<div class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 border-2 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">mail</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center justify-between">
+<p class="font-bold">David Chen</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Oct 24</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Parking instructions for the venue tomorrow.</p>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="flex h-1.5 w-1.5 rounded-full bg-blue-400"></span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-blue-400">Sent</span>
+</div>
+</div>
+</div>
+<!-- Log Item 5 -->
+<div class="flex items-center gap-4 py-4">
+<div class="relative">
+<img alt="Profile" class="h-12 w-12 rounded-full object-cover" data-alt="Portrait of a smiling woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvhZHR1cOtd3A-xAXeoHnSzSqtuMCFT6xOyRKsKRZh87-xq-fLOMh7s2jjE0AF2kGlNLYiWlut1mTZTe3KDlll39rjmF1Lrh4GzkLm7YES7R1doaQFwxqagOZdIsp5kH2SR5lL19iUFWKQeKmEMrYK987-oXrQicdTWF9FsDwB1GiDSpL5BOQFeE7qPE4gnGWMUUfIpYiLZwjpQ3sIBjPMBaL016cunmJaGJ46SKi8tsxKvpz-PUjN6m6tE-CIHuRvEiZS-a_jMfMI"/>
+<div class="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 border-2 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined text-[12px] text-white font-bold">chat</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex items-center justify-between">
+<p class="font-bold">Emma Wilson</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Oct 23</p>
+</div>
+<p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-1">Reminder: The RSVP window closes tonight.</p>
+<div class="mt-1 flex items-center gap-1.5">
+<span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-emerald-500">Delivered</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 z-20 w-full max-w-md bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800">
+<div class="flex justify-around items-center h-20 px-4">
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Budget</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-500 dark:text-slate-400" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Guests</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<div class="relative flex flex-col items-center">
+<span class="material-symbols-outlined font-bold fill-1" style="font-variation-settings: 'FILL' 1;">drafts</span>
+<span class="text-[10px] font-bold uppercase tracking-tight">Invitations</span>
+<div class="absolute -top-1 -right-1 h-1.5 w-1.5 bg-primary rounded-full"></div>
+</div>
+</a>
+</div>
+</nav>
+</div>
+</body></html>
