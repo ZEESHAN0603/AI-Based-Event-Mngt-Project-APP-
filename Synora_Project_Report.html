@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -209,8 +209,8 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
   <h2>Abstract</h2>
   <hr class="thick"/>
   <p style="margin-top:18px;">The global events industry — spanning weddings, corporate conferences, cultural celebrations, product launches, and social gatherings — continues to experience rapid growth in both scale and complexity. Despite this growth, the technology supporting event coordination remains fragmented. Event organizers today rely on a disparate combination of messaging applications, spreadsheet tools, email clients, and phone calls to coordinate vendors, track budgets, and manage tasks — creating operational silos, communication gaps, and financial inefficiencies. No unified platform currently addresses the complete event management lifecycle from a mobile-first, intelligent perspective.</p>
-  <p>This report presents <span class="bold">EVORA</span> — an AI-Based Intelligent Event &amp; Vendor Management System — developed as a cross-platform mobile application using the <span class="bold">Flutter</span> framework and <span class="bold">Dart</span> programming language. EVORA implements a <span class="bold">Provider-based MVVM (Model–View–ViewModel)</span> architecture for reactive, scalable state management and delivers a unified platform for three user roles: <span class="bold">Administrators, Event Organizers, and Vendors</span>. The system integrates a comprehensive suite of features including AI-assisted budget planning, conversational AI guidance, a structured vendor marketplace, in-app messaging, event task management, and an administrative vendor approval workflow.</p>
-  <p>Key innovations include: <span class="bold">(i)</span> the <span class="italic">Nanban AI Chatbot</span> — an intent-based conversational assistant providing real-time budget allocation advice and vendor recommendations; <span class="bold">(ii)</span> the <span class="italic">Budget Recommendation Engine</span> — a rule-based financial intelligence system that allocates budget percentages by expense category based on event type (Wedding, Birthday, Corporate) and generates smart over-budget insight alerts; <span class="bold">(iii)</span> a <span class="italic">13-category Vendor Marketplace</span> supporting discovery, shortlisting, booking, review, and admin-governed approval; and <span class="bold">(iv)</span> a premium UI featuring glassmorphism cards, staggered animations, skeleton loading states, and full dark/light theming.</p>
+  <p>This report presents <span class="bold">EVORA</span> — an AI-Based Intelligent Event &amp; Vendor Management System — built upon a modern, multi-tier hybrid architecture. The mobile front-end is developed using the <span class="bold">Flutter</span> framework and <span class="bold">Dart</span> programming language, implementing a <span class="bold">Provider-based MVVM</span> architecture. The system serves two primary mobile roles — <span class="bold">Event Organizers</span> and <span class="bold">Vendors</span> — while administrative governance is performed exclusively through a companion <span class="bold">Next.js Admin Web Dashboard</span>. When an Admin selects their role on the mobile app, the system intelligently redirects them to the web dashboard via Flutter's <code>url_launcher</code> package, opening it in the device's external browser. This design philosophy ensures that management-heavy administrative operations are handled through a desktop-optimized web interface, while Organizers and Vendors enjoy a rich, dedicated mobile experience.</p>
+  <p>Key innovations include: <span class="bold">(i)</span> the <span class="italic">Nanban AI Chatbot</span> — an intent-based conversational assistant providing real-time budget allocation advice and vendor recommendations; <span class="bold">(ii)</span> the <span class="italic">Budget Recommendation Engine</span> — a rule-based financial intelligence system that allocates budget percentages by expense category based on event type (Wedding, Birthday, Corporate) and generates smart over-budget insight alerts; <span class="bold">(iii)</span> a <span class="italic">13-category Vendor Marketplace</span> supporting discovery, shortlisting, booking, review, and admin-governed approval via the web dashboard; and <span class="bold">(iv)</span> a premium UI featuring glassmorphism cards, staggered animations, skeleton loading states, and full dark/light theming.</p>
   <p>All 20 functional test cases passed successfully in unit, integration, and usability testing — achieving a usability satisfaction score of <span class="bold">4.3/5.0</span>. EVORA demonstrates that a thoughtfully engineered mobile application combining role-based access control, domain-specific AI intelligence, and a rich feature set can substantially improve the efficiency, intelligence, and user experience of event planning — making it a compelling contribution to the intersection of mobile computing and AI-driven service platforms.</p>
   <p><span class="bold">Keywords:</span> Flutter, Event Management, Vendor Management, AI Chatbot, Budget Intelligence, MVVM, Provider, Role-Based Access Control, Cross-Platform, Dart, Mobile Application, NLP.</p>
 </div>
@@ -296,12 +296,16 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
     <tr><td>UI / UX</td><td>User Interface / User Experience</td></tr>
     <tr><td>SDK</td><td>Software Development Kit</td></tr>
     <tr><td>API</td><td>Application Programming Interface</td></tr>
+    <tr><td>REST</td><td>Representational State Transfer</td></tr>
     <tr><td>JSON</td><td>JavaScript Object Notation</td></tr>
     <tr><td>UUID</td><td>Universally Unique Identifier</td></tr>
     <tr><td>FCM</td><td>Firebase Cloud Messaging</td></tr>
     <tr><td>RBAC</td><td>Role-Based Access Control</td></tr>
     <tr><td>ER</td><td>Entity-Relationship</td></tr>
     <tr><td>SaaS</td><td>Software as a Service</td></tr>
+    <tr><td>Next.js</td><td>React-based full-stack web framework by Vercel (used for Admin Dashboard)</td></tr>
+    <tr><td>FastAPI</td><td>Modern high-performance Python web framework for building REST APIs</td></tr>
+    <tr><td>Supabase</td><td>Open-source Firebase alternative providing PostgreSQL database &amp; Auth</td></tr>
   </table>
 </div>
 
@@ -338,7 +342,7 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
     <li><span class="bold">Budget Intelligence:</span> Smart financial tracking with event-specific percentage allocations, visual expense composition graphs, and over-budget algorithmic warnings.</li>
     <li><span class="bold">Nanban AI Agent:</span> An onboard chatbot implementing NLP intent-matching to guide users on vendor selection and budget distribution.</li>
     <li><span class="bold">Integrated Telemetry:</span> In-app threaded messaging between organizers and vendors, securing a chronological record of negotiations.</li>
-    <li><span class="bold">Admin Governance:</span> A dedicated console for holistic platform analytics, user registry management, and mandatory vendor verification workflows.</li>
+    <li><span class="bold">Admin Governance (Web Dashboard):</span> Administrative workflows — including platform analytics, user registry management, vendor approval queues, category management, and blog management — are handled through a dedicated <span class="bold">Next.js Admin Web Dashboard</span>. The Flutter mobile app includes an Admin role option on the role selection screen; selecting it redirects the Admin to the web dashboard via <code>url_launcher</code> in the device's external browser. Administrative workflows are handled through a dedicated web dashboard because admin operations are management-heavy and better optimized for desktop/web interfaces.</li>
   </ul>
 
   <h3>1.5 Objectives of the Project</h3>
@@ -486,7 +490,7 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
     <tr><td class="bold">shimmer</td><td>^3.0.0</td><td>Abstracts asynchronous FutureBuilders into skeletal loading states.</td></tr>
     <tr><td class="bold">flutter_staggered_animations</td><td>^1.1.1</td><td>Translates lists into sequenced SlideTransition cascading entrance arrays.</td></tr>
     <tr><td class="bold">animations</td><td>^2.1.2</td><td>Facilitates Material 3 defined SharedAxis transitional route pushes.</td></tr>
-    <tr><td class="bold">url_launcher</td><td>^6.2.5</td><td>Triggers native OS-bound URIs (dialer padding, mailto links).</td></tr>
+    <tr><td class="bold">url_launcher</td><td>^6.3.1</td><td>Redirects Admin role to the external Next.js Admin Web Dashboard (<code>LaunchMode.externalApplication</code>). Also handles dialer and mailto links throughout the app.</td></tr>
   </table>
 </div>
 
@@ -608,48 +612,75 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
   <h3>6.1 System Architecture Diagram</h3>
   
   <div class="diag-wrapper">
-    <div class="diag-title">Figure 6.1 – EVORA System Architecture Flow</div>
-    
-    <div class="arch-layer">
-      <div class="arch-layer-title">PRESENTATION LAYER (Flutter UI &amp; Widgets)</div>
-      <div class="arch-grid">
-        <div class="arch-box">AdminDashboard</div><div class="arch-box">VendorApproval</div>
-        <div class="arch-box">OrgDashboard</div><div class="arch-box">BudgetOverview</div>
-        <div class="arch-box">VendorList</div><div class="arch-box">AIChatbot</div>
-        <div class="arch-box">VendorHome</div><div class="arch-box">VendorCalendar</div>
+    <div class="diag-title">Figure 6.1 – EVORA Hybrid System Architecture</div>
+
+    <!-- Row 1: Two top-level platform pillars -->
+    <div style="display:flex;gap:14px;align-items:stretch;">
+
+      <!-- Flutter Mobile App -->
+      <div class="arch-layer" style="flex:2;">
+        <div class="arch-layer-title">&#128241; FLUTTER MOBILE APPLICATION</div>
+        <div style="font-size:8.5pt;color:#555;margin-bottom:8px;">Cross-platform (Android / iOS) &mdash; Dart + Provider MVVM</div>
+        <div class="arch-grid">
+          <div class="arch-box" style="background:#e0f2fe;border-color:#0284c7;">OrgDashboard</div>
+          <div class="arch-box" style="background:#e0f2fe;border-color:#0284c7;">BudgetOverview</div>
+          <div class="arch-box" style="background:#e0f2fe;border-color:#0284c7;">VendorList</div>
+          <div class="arch-box" style="background:#e0f2fe;border-color:#0284c7;">AIChatbot (Nanban)</div>
+          <div class="arch-box" style="background:#d1fae5;border-color:#059669;">VendorHome</div>
+          <div class="arch-box" style="background:#d1fae5;border-color:#059669;">VendorCalendar</div>
+          <div class="arch-box" style="background:#d1fae5;border-color:#059669;">VendorBookings</div>
+          <div class="arch-box" style="background:#fef3c7;border-color:#d97706;font-style:italic;">Admin &#8594; url_launcher</div>
+        </div>
       </div>
-    </div>
-    
-    <div class="arch-arrow"><br/><span style="font-size:10pt;">context.watch() / NotifyListeners()</span></div>
-    
-    <div class="arch-layer">
-      <div class="arch-layer-title">BUSINESS LOGIC LAYER (ChangeNotifier Providers)</div>
-      <div class="arch-grid">
-        <div class="arch-box" style="background:#fef3c7;border-color:#f59e0b;">UserProvider</div>
-        <div class="arch-box" style="background:#fef3c7;border-color:#f59e0b;">EventProvider</div>
-        <div class="arch-box" style="background:#fef3c7;border-color:#f59e0b;">VendorProvider</div>
-        <div class="arch-box" style="background:#fef3c7;border-color:#f59e0b;">BudgetProvider</div>
-        <div class="arch-box" style="background:#fef3c7;border-color:#f59e0b;">TaskProvider</div>
-        <div class="arch-box" style="background:#fef3c7;border-color:#f59e0b;">AdminProvider</div>
+
+      <!-- Next.js Admin Dashboard -->
+      <div class="arch-layer" style="flex:1;border-color:#7c3aed;">
+        <div class="arch-layer-title" style="color:#7c3aed;">&#128187; NEXT.JS ADMIN WEB DASHBOARD</div>
+        <div style="font-size:8.5pt;color:#555;margin-bottom:8px;">Desktop/Web &mdash; admin.planzo.com</div>
+        <div class="arch-grid">
+          <div class="arch-box" style="background:#f3e8ff;border-color:#7c3aed;">Vendor Approvals</div>
+          <div class="arch-box" style="background:#f3e8ff;border-color:#7c3aed;">User Management</div>
+          <div class="arch-box" style="background:#f3e8ff;border-color:#7c3aed;">Category Management</div>
+          <div class="arch-box" style="background:#f3e8ff;border-color:#7c3aed;">Analytics</div>
+          <div class="arch-box" style="background:#f3e8ff;border-color:#7c3aed;">Blog Management</div>
+        </div>
       </div>
     </div>
 
-    <div class="arch-arrow"><br/><span style="font-size:10pt;">CRUD Operations</span></div>
-    
-    <div class="arch-layer">
-      <div class="arch-layer-title">DATA LAYER (Dart Models &amp; Storage)</div>
+    <div class="arch-arrow"><br/><span style="font-size:10pt;">Both clients communicate via shared REST APIs</span></div>
+
+    <!-- FastAPI Backend -->
+    <div class="arch-layer" style="border-color:#0891b2;">
+      <div class="arch-layer-title" style="color:#0891b2;">&#9881; FASTAPI BACKEND (Shared API Layer)</div>
       <div class="arch-grid">
-        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">UserModel</div>
-        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">EventModel</div>
-        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">VendorModel</div>
-        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">Mock DB</div>
+        <div class="arch-box" style="background:#e0f7fa;border-color:#0891b2;">Auth Endpoints</div>
+        <div class="arch-box" style="background:#e0f7fa;border-color:#0891b2;">Event APIs</div>
+        <div class="arch-box" style="background:#e0f7fa;border-color:#0891b2;">Vendor APIs</div>
+        <div class="arch-box" style="background:#e0f7fa;border-color:#0891b2;">Budget APIs</div>
+        <div class="arch-box" style="background:#e0f7fa;border-color:#0891b2;">Booking APIs</div>
+        <div class="arch-box" style="background:#e0f7fa;border-color:#0891b2;">Admin APIs</div>
+      </div>
+    </div>
+
+    <div class="arch-arrow"><br/><span style="font-size:10pt;">SQL Queries / ORM</span></div>
+
+    <!-- Supabase -->
+    <div class="arch-layer" style="border-color:#10b981;">
+      <div class="arch-layer-title" style="color:#10b981;">&#128196; SUPABASE (Shared PostgreSQL Database)</div>
+      <div class="arch-grid">
+        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">users</div>
+        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">events</div>
+        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">vendors</div>
+        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">bookings</div>
+        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">tasks</div>
+        <div class="arch-box" style="background:#d1fae5;border-color:#10b981;">expenses</div>
       </div>
     </div>
   </div>
 
-  <p>EVORA is constructed upon a highly decoupled, three-tier <strong>Provider-based MVVM (Model-View-ViewModel)</strong> paradigm. This architecture explicitly isolates the graphical user interface from the underlying business logic and data persistence layers. The top tier, the <strong>Presentation Layer</strong>, consists entirely of stateless and stateful Flutter widgets defining the Admin, Organizer, and Vendor modules. These widgets do not contain calculation algorithms or navigation state; they merely observe state objects.</p>
-  <p>The <strong>Business Logic Layer</strong> acts as the ViewModel, composed of seven specialized `ChangeNotifier` classes (Providers) securely wrapped around the root `MaterialApp` via a `MultiProvider`. These providers handle complex computations—such as the AI intent parsing and budget percentage distribution—and subsequently broadcast `notifyListeners()` to trigger targeted, localized UI rebuilds without necessitating full-screen re-rendering.</p>
-  <p>Finally, the <strong>Data Layer</strong> enforces strict typing through native Dart Models (e.g., `EventModel`, `VendorModel`) and currently interacts with an asynchronous mock storage mechanism. This strictly layered approach ensures that integrating a live NoSQL database like Firebase in the future will require zero modifications to the UI layer, confirming the system's long-term enterprise scalability.</p>
+  <p>EVORA is engineered upon a <strong>hybrid, multi-tier architecture</strong> that separates concerns across two distinct front-end platforms. The <strong>Flutter Mobile Application</strong> serves as the primary interface for two user roles: <strong>Event Organizers</strong> and <strong>Vendors</strong>, implemented using a Provider-based MVVM pattern. A third role &mdash; Administrator &mdash; is visible on the mobile Role Selection screen, but upon selection, the app executes a <code>url_launcher</code> redirect that opens the <strong>Next.js Admin Web Dashboard</strong> in the device's native external browser, rather than rendering any native admin UI screens.</p>
+  <p>Administrative workflows are handled through a dedicated web dashboard because admin operations are management-heavy and better optimized for desktop/web interfaces. The Next.js dashboard exposes full admin capabilities: vendor approval queues, user management, category configuration, analytics charts, and blog management &mdash; all designed for large-screen, keyboard-and-mouse interaction patterns.</p>
+  <p>Both the Flutter mobile app and the Next.js admin dashboard communicate with a shared <strong>FastAPI Backend</strong>, which provides a unified REST API layer covering authentication, event management, vendor operations, and administrative actions. All persistent state is stored in a shared <strong>Supabase PostgreSQL database</strong>, ensuring a single source of truth across both platforms. This separation enforces strict operational boundaries while maintaining centralized data integrity.</p>
 </div>
 
 <!-- ===================== USE CASE ===================== -->
@@ -671,9 +702,11 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
         
         <!-- Admin UC -->
         <div style="border-bottom:1px dashed #7dd3fc;padding-bottom:10px;margin-bottom:10px;">
+          <div style="font-size:8.5pt;color:#7c3aed;font-weight:bold;text-align:center;margin-bottom:6px;">&#9432; Via Next.js Web Dashboard (external browser)</div>
           <div class="uc-item">Review Platform Analytics</div>
           <div class="uc-item">Approve/Reject Vendors</div>
-          <div class="uc-item">Monitor Global Bookings</div>
+          <div class="uc-item">Manage Users &amp; Categories</div>
+          <div class="uc-item">Manage Blog Content</div>
         </div>
         
         <!-- Org UC -->
@@ -697,9 +730,9 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
     </div>
   </div>
 
-  <p>The Use Case diagram delineates the explicit functional boundaries enforced by EVORA's Role-Based Access Control (RBAC) architecture. By categorizing system capabilities against three primary actors—Admin, Organizer, and Vendor—the platform ensures strict operational isolation. A user authenticated as an Organizer cannot query the administrative approval queues, thereby preserving marketplace integrity.</p>
-  <p>The <strong>Organizer</strong> operates as the system's primary kinetic actor, possessing access to the widest array of computational tools. Their use cases are interconnected: an Organizer queries the AI Chatbot to understand budget distributions, uses those limits to create a Budget Breakdown, subsequently browses the Vendor Marketplace, and finalizes Bookings. This interdependent functional loop forms the core event-planning workflow of the application.</p>
-  <p>Conversely, the <strong>Admin</strong> and <strong>Vendor</strong> assume reactive governance and service-provisioning roles, respectively. Administrators act as the security bottleneck, utilizing their distinct use cases to sanitize the vendor pool preventing unverified entities from exposing services to the Organizers. Vendors interact sequentially to adjust portfolio aesthetics, respond to inbound organizer inquiries via the messaging module, and confirm calendar bookings.</p>
+  <p>The Use Case diagram delineates the explicit functional boundaries enforced by EVORA's Role-Based Access Control (RBAC) architecture across its hybrid multi-platform design. The <strong>Organizer</strong> and <strong>Vendor</strong> roles interact entirely through the Flutter mobile application. The <strong>Admin</strong> role, while present on the mobile role selection screen, is redirected upon selection to the external Next.js Admin Web Dashboard via <code>url_launcher</code>. This separation ensures that management-heavy administrative use cases &mdash; vendor approval, user management, category configuration, analytics &mdash; are served through a desktop-optimized interface rather than a constrained mobile screen.</p>
+  <p>The <strong>Organizer</strong> operates as the system's primary kinetic actor on mobile, possessing access to the widest array of computational tools. Their use cases are interconnected: an Organizer queries the AI Chatbot to understand budget distributions, uses those limits to create a Budget Breakdown, subsequently browses the Vendor Marketplace, and finalizes Bookings. This interdependent functional loop forms the core event-planning workflow of the application.</p>
+  <p>Conversely, the <strong>Vendor</strong> assumes a reactive service-provisioning role on the mobile app, while the <strong>Admin</strong> exercises governance exclusively from the web dashboard. This architectural decision preserves the mobile app's focus on field-driven, on-the-go use cases while offloading data-intensive administrative oversight to a browser-based interface optimized for wide viewports and multi-table management.</p>
 </div>
 
 <!-- ===================== CLASS DIAGRAM ===================== -->
@@ -891,8 +924,16 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
   <hr class="thick"/>
 
   <h3>7.1 Authentication &amp; Role Management</h3>
-  <p>EVORA implements a robust, state-driven Authentication module structured around Role-Based Access Control (RBAC). The entry sequence begins at the `RoleSelectionScreen`, which injects the selected enumerated role (Admin, Organizer, or Vendor) into the global `UserProvider`. This architecture enforces zero cross-pollination among roles. When a login is executed via `LoginScreen`, the navigation hierarchy immediately segregates routing logic: an authenticated Admin is hard-routed to `AdminDashboard`, while an Organizer is directed toward the `OrganizerDashboard.dart` router array.</p>
-  <p>Authentication forms implement rigorous, localized input validation using Flutter's native `FormState` mechanics combined with asynchronous error handling. The login procedure simulates backend network payload latencies by utilizing `Future.delayed(Duration(seconds: 1))` whilst projecting an asynchronous `CircularProgressIndicator`, ensuring a standard commercial User Experience (UX).</p>
+  <p>EVORA implements a robust, state-driven Authentication module structured around Role-Based Access Control (RBAC). The entry sequence begins at the <code>RoleSelectionScreen</code>, which presents three role cards: <strong>Organizer</strong>, <strong>Vendor</strong>, and <strong>Admin</strong>. Selecting Organizer or Vendor injects the chosen enumerated role into the global <code>UserProvider</code> and routes the user to their respective Login screen. The navigation hierarchy then segregates routing logic: an authenticated Organizer is directed toward the <code>OrganizerDashboard</code>, while a Vendor is routed to the <code>VendorHome</code> screen.</p>
+  <p>The <strong>Admin role follows a fundamentally different flow</strong>: rather than loading a native mobile admin screen, the app invokes Flutter's <code>url_launcher</code> package to open the dedicated <strong>Next.js Admin Web Dashboard</strong> in the device's external browser. This design ensures that administrative workflows &mdash; which are management-heavy and better optimized for desktop/web interfaces &mdash; are handled outside the mobile app. The redirect implementation uses:</p>
+  <div class="box">
+    <p class="bold">Admin Redirect Logic (Dart):</p>
+    <pre>await launchUrl(
+  Uri.parse('https://admin.planzo.com'),
+  mode: LaunchMode.externalApplication,
+);</pre>
+  </div>
+  <p>Authentication forms implement rigorous, localized input validation using Flutter's native <code>FormState</code> mechanics combined with asynchronous error handling. The login procedure simulates backend network payload latencies by utilizing <code>Future.delayed(Duration(seconds: 1))</code> whilst projecting an asynchronous <code>CircularProgressIndicator</code>, ensuring a standard commercial User Experience (UX).</p>
 
   <h3>7.2 Organizer Module</h3>
   <p>The Organizer namespace constitutes the most computationally dense partition of EVORA. It centers around a multifaceted `OrganizerDashboard` encompassing several critical sub-systems:</p>
@@ -911,9 +952,16 @@ pre{background:#f3f3f3;border:1px solid #ccc;border-left:4px solid #6366f1;
     <li><span class="bold">Messaging Construct (`OrganizerMessages`):</span> Organizers and Vendors are bridged through a direct, threaded dialogue box isolated uniquely for the negotiation of specific booking instances, thereby nullifying the prerequisite for external applications like WhatsApp.</li>
   </ul>
 
-  <h3>7.4 Admin Module</h3>
-  <p>The administrative console, localized in `AdminDashboard.dart`, abstracts high-level governance. The architecture centers upon analytical oversight and platform sanitization. Global statistics regarding comprehensive user aggregation, generated revenue thresholds, and absolute booking permutations are aggregated via loop iterations traversing the Providers.</p>
-  <p>Crucially, the Admin oversees the <strong>Pending Vendor Queue</strong> (`AdminVendors.dart`). New registrations are placed into holding arrays pending a manual review pipeline. The Admin scrutinizes incoming pricing structures, service validations, and portfolio verifications, triggering either `updateVendorStatus(approved)` or `updateVendorStatus(rejected)`. Rejected arrays are instantly unmounted from global visibility trees, structurally enforcing an enterprise-grade standard of marketplace trust and quality.</p>
+  <h3>7.4 Admin Module (Next.js Web Dashboard)</h3>
+  <p>Administrative workflows in EVORA are intentionally handled outside the Flutter mobile application. <strong>Administrative workflows are handled through a dedicated web dashboard because admin operations are management-heavy and better optimized for desktop/web interfaces.</strong> The dedicated <strong>Next.js Admin Web Dashboard</strong> (accessible at <code>admin.planzo.com</code>) provides a fully featured governance console designed for large-screen, desktop-first interaction.</p>
+  <p>The mobile app's Role Selection screen retains the Admin option for accessibility. When an Admin taps their role card and authenticates, the <code>url_launcher</code> package opens the Next.js dashboard in the device's external browser using <code>LaunchMode.externalApplication</code>, providing a seamless handoff. The Next.js Admin Dashboard encompasses:</p>
+  <ul>
+    <li><span class="bold">Vendor Approvals:</span> A triage queue for pending vendor registrations. Admins review pricing, category, and portfolio submissions and execute Approve/Reject actions that propagate instantly through the shared FastAPI backend to the Supabase database, immediately affecting Organizer marketplace visibility.</li>
+    <li><span class="bold">User Management:</span> A comprehensive user registry providing role assignment, account suspension, and user profile inspection across all Organizer and Vendor accounts.</li>
+    <li><span class="bold">Category Management:</span> Configuration panel for managing the 13 vendor service categories exposed in the mobile marketplace.</li>
+    <li><span class="bold">Analytics Dashboard:</span> Aggregated platform statistics including total revenue, active bookings, registered users, and vendor conversion metrics visualized through responsive charts.</li>
+    <li><span class="bold">Blog Management:</span> A CMS-style editor for publishing platform announcements, event planning guides, and vendor spotlight posts.</li>
+  </ul>
   
   <h3>7.5 State Management Architecture</h3>
   <p>To avert the notorious 'Widget Tree Prop-Drilling' anti-pattern, EVORA relies extensively upon `Provider` (`ChangeNotifier`). Seven distinct ChangeNotifiers orchestrate asynchronous global system states (`UserProvider`, `EventProvider`, `VendorProvider`, `BudgetProvider`, `TaskProvider`, `AdminProvider`, and `AppThemeProvider`).</p>
@@ -1052,15 +1100,15 @@ if (lowerInput.contains('budget') || lowerInput.contains('money')) {
 
   <h3>11.1 Conclusion</h3>
   <p>The research, design, and computational realization of <span class="bold">EVORA (Intelligent Event &amp; Vendor Management System)</span> effectively substantiates the hypothesis that integrating conversational AI and predictive financial heuristics into a monolithic, role-segregated mobile architecture drastically optimizes the event management lifecycle.</p>
-  <p>By shifting away from legacy web-centric directories toward a reactive <span class="bold">Flutter MVVM architecture</span>, the platform delivers an uncompromised 60FPS UI spanning heavily animated glassmorphism interfaces across both Android and iOS ecosystems. The rigid instantiation of <span class="bold">Role-Based Access Control (RBAC)</span> successfully isolates the Administrator's imperative governance metrics, the Organizers expansive planning suite, and the Vendors commercial portfolio, completely mitigating traditional marketplace latency and fraudulent permeation.</p>
+  <p>By shifting away from legacy web-centric directories toward a <span class="bold">hybrid architecture</span> &mdash; combining a <span class="bold">Flutter MVVM mobile application</span> for Organizers and Vendors with a dedicated <span class="bold">Next.js Admin Web Dashboard</span> for governance &mdash; the platform delivers a focused, role-optimized experience on every interface. The mobile app maintains an uncompromised 60FPS UI spanning animated glassmorphism interfaces across both Android and iOS ecosystems. The rigid instantiation of <span class="bold">Role-Based Access Control (RBAC)</span> successfully isolates the Administrator's imperative governance metrics (accessed via web), the Organizers expansive planning suite, and the Vendors commercial portfolio &mdash; completely mitigating traditional marketplace latency and fraudulent permeation. The Admin redirect pattern via <code>url_launcher</code> exemplifies a pragmatic architectural decision: administrative workflows are management-heavy and better optimized for desktop/web interfaces.</p>
   <p>Operationally, EVORA transcends basic directory functionalities by embedding structural intelligence. The <span class="bold">Intelligent Budget Provider</span> curtails chronic financial overspending by deploying algorithmic percentage allocations bound algorithmically to specific event typologies. Furthermore, the localized <span class="bold">Nanban AI Agent</span> demonstrates the viability of executing robust, on-device NLP intent-parsing to deliver immediate conversational guidance regarding vendor curation.</p>
   <p>Ultimately, EVORA serves as a definitive architectural blueprint for modernizing Indias colossal yet deeply unorganized micro-event vendor landscape, converting analog negotiations into a secure, trackable, and intelligently guided digital ecosystem.</p>
 
   <h3>11.2 Future Enhancements</h3>
   <p>While EVORA fulfills its baseline objectives successfully, its scalable architecture accommodates immediate enterprise-grade expansions:</p>
   
-  <h4>1. Cloud Storage &amp; Backend Infrastructure (Firebase/Supabase)</h4>
-  <p>Replacing the current synchronous mock payload arrays with a real-time NoSQL Firestore database or PostgreSQL Supabase backend. This guarantees dynamic multi-device state synchronization, persistent authentication protocols, and cloud-hosted historical analytics indispensable for long-tail user retention.</p>
+  <h4>1. Live Backend Integration (FastAPI + Supabase)</h4>
+  <p>The current architecture already designates <strong>FastAPI</strong> as the shared backend API layer and <strong>Supabase</strong> as the shared PostgreSQL database. The next implementation phase involves replacing the current synchronous mock data arrays in the Flutter app with live REST API calls to the FastAPI service. This will enable real-time multi-device state synchronization, persistent authentication via Supabase Auth (JWT tokens), and cloud-hosted historical analytics &mdash; indispensable for long-tail user retention and the Admin Dashboard's reporting modules.</p>
 
   <h4>2. Machine Learning Collaborative Diagnostics</h4>
   <p>Upgrading the deterministic vendor heuristic engine with a cloud-trained Collaborative Filtering (CF) ML tensor. The system would actively learn from historical booking combinations (e.g., specific photographers frequently booked alongside premium venues) to supply autonomously predictive suggestions scaling beyond linear constraint models.</p>
@@ -1079,6 +1127,9 @@ if (lowerInput.contains('budget') || lowerInput.contains('money')) {
 
   <h4>7. Multilingual Subsystem Injections</h4>
   <p>Abstracting all direct hardcoded UI strings into translation maps via the `intl` package, dynamically translating the interface based on the device's native OS locale state. Supporting Hindi, Tamil, Telugu, and Kannada exponentially scales user adoption within Indias tier-2 logistical markets.</p>
+
+  <h4>8. Next.js Admin Dashboard — Enhanced Modules</h4>
+  <p>The existing <strong>Next.js Admin Web Dashboard</strong> at <code>admin.planzo.com</code> can be expanded with additional governance modules: real-time vendor dispute resolution workflows, promotional coupon/discount management, multi-admin role tiering (Super Admin vs. Regional Admin), and PDF report export of platform analytics. Integrating server-side rendering (SSR) with Next.js and TailwindCSS ensures the dashboard scales elegantly across enterprise-level data volumes while maintaining sub-second page load times.</p>
 </div>
 
 <!--  CHAPTER 12 – APPENDICES & REFERENCES  -->
@@ -1129,10 +1180,11 @@ void main() {
 
   <h3>Appendix B – Structural Module Extent</h3>
   <table style="width:100%;font-size:10pt;">
-    <tr><th>Authentication Node</th><th>Execution Node</th><th>Governance Node</th></tr>
-    <tr><td>role_selection.dart</td><td>organizer_dashboard.dart</td><td>admin_dashboard.dart</td></tr>
-    <tr><td>login_screen.dart</td><td>budget_overview.dart</td><td>admin_vendors.dart</td></tr>
-    <tr><td>signup_screen.dart</td><td>ai_chatbot.dart / vendor_list.dart</td><td>admin_bookings.dart</td></tr>
+    <tr><th>Authentication Node</th><th>Mobile Execution Node</th><th>Web Admin Node (Next.js)</th></tr>
+    <tr><td>role_selection.dart</td><td>organizer_dashboard.dart</td><td>admin.planzo.com/dashboard</td></tr>
+    <tr><td>login_screen.dart</td><td>budget_overview.dart</td><td>admin.planzo.com/vendors</td></tr>
+    <tr><td>signup_screen.dart</td><td>ai_chatbot.dart / vendor_list.dart</td><td>admin.planzo.com/users</td></tr>
+    <tr><td colspan="3" style="background:#fef3c7;font-style:italic;">&#9654; Admin role on mobile triggers: launchUrl(Uri.parse('https://admin.planzo.com'), mode: LaunchMode.externalApplication)</td></tr>
   </table>
 
   <h3>References</h3>

@@ -184,8 +184,9 @@ class SynoraAvatar extends StatelessWidget {
       );
     }
     
-    final String initial = (name != null && name!.isNotEmpty) ? name![0].toUpperCase() : 'S';
-    final Color color = Colors.primaries[name.hashCode % Colors.primaries.length];
+    final String safeName = (name != null && name!.isNotEmpty) ? name! : 'Synora';
+    final String initial = safeName[0].toUpperCase();
+    final Color color = Colors.primaries[safeName.hashCode % Colors.primaries.length];
 
     return Container(
       width: size,

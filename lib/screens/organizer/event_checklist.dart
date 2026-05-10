@@ -120,7 +120,7 @@ class _EventChecklistScreenState extends State<EventChecklistScreen> {
 
     return GlassContainer(
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Row(

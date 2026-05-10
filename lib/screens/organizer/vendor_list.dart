@@ -2,101 +2,127 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import '../../providers/vendor_provider.dart';
+import '../../providers/event_provider.dart';
+import '../../models/event.dart';
 import '../../models/vendor.dart';
 import '../../widgets/design_system.dart';
 import '../../widgets/synora_header.dart';
-import '../vendors/vendor_detail_screen.dart';
+import 'vendor_details.dart';
 
-class VendorListScreen extends StatelessWidget {
-  final VendorCategory category;
+class VendorListScreen extends StatefulWidget {
+  final String categoryId;
+  final String categoryName;
+  final Event? event;
 
-  const VendorListScreen({super.key, required this.category});
+  const VendorListScreen({
+    super.key,
+    required this.categoryId,
+    required this.categoryName,
+    this.event,
+  });
+
+  @override
+  State<VendorListScreen> createState() => _VendorListScreenState();
+}
+
+class _VendorListScreenState extends State<VendorListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VendorProvider>().fetchVendors(categoryId: widget.categoryId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final vendorProvider = context.watch<VendorProvider>();
-    final vendors = vendorProvider.getVendorsByCategory(category);
+    final vendors = vendorProvider.vendors;
 
     return Scaffold(
-      body: Column(
-        children: [
-          SynoraHeader(
-            title: '${category.name} Vendors',
-            subtitle: 'Recommended experts for your event',
-          ),
-          Expanded(
-            child: FutureBuilder(
-              future: Future.delayed(const Duration(milliseconds: 800)),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(20),
-                    itemCount: 4,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.only(bottom: 20),
-                      child: GlassCard(
-                        padding: EdgeInsets.zero,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SkeletonLoader(width: double.infinity, height: 180, borderRadius: 24),
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SkeletonLoader(width: MediaQuery.of(context).size.width * 0.6, height: 20),
-                                  const SizedBox(height: 8),
-                                  SkeletonLoader(width: MediaQuery.of(context).size.width * 0.4, height: 14),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                
-                return vendors.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.search_off, size: 64),
-                            const SizedBox(height: 16),
-                            const Text('No vendors found for this category.', style: TextStyle()),
-                          ],
-                        ),
-                      )
-                    : AnimationLimiter(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.all(20),
-                          itemCount: vendors.length,
-                          itemBuilder: (context, index) {
-                            final vendor = vendors[index];
-                            return AnimationConfiguration.staggeredList(
-                              position: index,
-                              duration: const Duration(milliseconds: 375),
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                  child: _buildVendorCard(context, vendor, vendorProvider),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-              },
+      body: SafeArea(
+        child: Column(
+          children: [
+            SynoraHeader(
+              title: '${widget.categoryName} Vendors',
+              subtitle: 'Expert professionals for your event',
             ),
-          ),
+            Expanded(
+              child: vendorProvider.isLoading
+                  ? _buildLoadingSkeleton()
+                  : vendors.isEmpty
+                      ? _buildEmptyState()
+                      : AnimationLimiter(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(16),
+                            itemCount: vendors.length,
+                            itemBuilder: (context, index) {
+                              final vendor = vendors[index];
+                              return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 375),
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                    child: _buildVendorCard(context, vendor, vendorProvider),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.search_off, size: 64, color: Colors.grey),
+          const SizedBox(height: 16),
+          const Text('No vendors found in this category.',
+              style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
   }
 
-  Widget _buildVendorCard(BuildContext context, vendor, vendorProvider) {
+  Widget _buildLoadingSkeleton() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 3,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: GlassCard(
+          padding: EdgeInsets.zero,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SkeletonLoader(width: double.infinity, height: 180, borderRadius: 24),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SkeletonLoader(width: MediaQuery.of(context).size.width * 0.6, height: 20),
+                    const SizedBox(height: 8),
+                    SkeletonLoader(width: MediaQuery.of(context).size.width * 0.4, height: 14),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVendorCard(BuildContext context, Vendor vendor, VendorProvider provider) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: AnimatedPressable(
@@ -104,15 +130,7 @@ class VendorListScreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => VendorDetailScreen(
-                vendor: {
-                  'name': vendor.name,
-                  'location': vendor.location,
-                  'price': 'Starting at ₹${vendor.price}',
-                  'imageUrl': vendor.imageUrl,
-                  'rating': vendor.rating,
-                },
-              ),
+              builder: (context) => VendorDetailScreen(vendor: vendor),
             ),
           );
         },
@@ -125,31 +143,19 @@ class VendorListScreen extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                    child: Image.network(
-                      vendor.imageUrl,
-                      height: 180,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        height: 180,
-                        child: const Icon(Icons.broken_image, size: 48),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 12,
-                    right: 12,
-                    child: GlassCard(
-                      blur: 10,
-                      opacity: 0.2,
-                      padding: const EdgeInsets.all(4),
-                      borderRadius: BorderRadius.circular(12),
-                      child: IconButton(
-                        icon: Icon(
-                          vendor.isShortlisted ? Icons.favorite : Icons.favorite_border,
-                          size: 20,
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.network(
+                        vendor.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.business, size: 64, color: Colors.grey),
                         ),
-                        onPressed: () => vendorProvider.toggleShortlist(vendor.id),
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return const SkeletonLoader(width: double.infinity, height: double.infinity);
+                        },
                       ),
                     ),
                   ),
@@ -163,25 +169,18 @@ class VendorListScreen extends StatelessWidget {
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
-                          colors: [
-                            Colors.black.withValues(alpha: 0.8),
-                            Colors.transparent,
-                          ],
+                          colors: [Colors.black.withOpacity(0.8), Colors.transparent],
                         ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.star, size: 16),
+                          const Icon(Icons.star, size: 16, color: Colors.amber),
                           const SizedBox(width: 4),
-                          Text(
-                            vendor.rating,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Text(vendor.rating.toString(),
+                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                           const Spacer(),
-                          Text(
-                            'Starting at ₹${vendor.price}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Text('₹${vendor.basePriceMin.toInt()}+',
+                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                         ],
                       ),
                     ),
@@ -193,20 +192,28 @@ class VendorListScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      vendor.name,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                    Text(vendor.businessName,
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Icon(Icons.location_on_outlined, size: 14),
+                        const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
                         const SizedBox(width: 4),
-                        Text(
-                          vendor.location,
-                          style: const TextStyle(fontSize: 13),
-                        ),
+                        Text(vendor.location, style: const TextStyle(fontSize: 13, color: Colors.grey)),
                       ],
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          // Shortlist logic will be added here
+                        },
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: const Text('View Details'),
+                      ),
                     ),
                   ],
                 ),

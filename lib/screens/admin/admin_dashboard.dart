@@ -31,10 +31,10 @@ class AdminDashboard extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return ListView(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(16),
                     children: [
                       _buildOverviewSkeleton(context),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
                       const SkeletonLoader(width: 150, height: 24),
                       const SizedBox(height: 16),
                       const SkeletonLoader(width: double.infinity, height: 150, borderRadius: 24),
@@ -44,7 +44,7 @@ class AdminDashboard extends StatelessWidget {
 
                 return AnimationLimiter(
                   child: ListView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                     children: AnimationConfiguration.toStaggeredList(
                       duration: const Duration(milliseconds: 375),
                       childAnimationBuilder: (widget) => SlideAnimation(
@@ -53,13 +53,13 @@ class AdminDashboard extends StatelessWidget {
                       ),
                       children: [
                         _buildOverviewCards(context, adminProvider, vendorProvider),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
                         _buildAnalyticsSection(context),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
                         _buildVendorApprovalList(context, vendorProvider),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
                         _buildActivityLog(context, adminProvider),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 24),
                       ],
                     ),
                   ),
@@ -118,14 +118,14 @@ class AdminDashboard extends StatelessWidget {
 
   Widget _adminStatCard(BuildContext context, String label, String value, IconData icon, Color color) {
     return GlassCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
+              color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, size: 24, color: color),
@@ -145,7 +145,7 @@ class AdminDashboard extends StatelessWidget {
         const Text('Platform Insights', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 16),
         GlassCard(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: [
               _analyticRow('Most Booked Category', 'Catering (45%)', Colors.indigo),
@@ -165,7 +165,7 @@ class AdminDashboard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14)),
-        Text(value, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
       ],
     );
   }
@@ -196,8 +196,8 @@ class AdminDashboard extends StatelessWidget {
       child: GlassCard(
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          title: Text(v.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text(v.category.name.toUpperCase(), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
+          title: Text(v.businessName, style: const TextStyle(fontWeight: FontWeight.bold)),
+          subtitle: Text(v.categoryId.toUpperCase(), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

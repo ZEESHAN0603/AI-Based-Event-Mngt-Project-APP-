@@ -5,52 +5,120 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../providers/vendor_provider.dart';
 import '../../providers/event_provider.dart';
-import '../../providers/budget_provider.dart';
+import '../../providers/booking_provider.dart';
 import '../../models/vendor.dart';
 import 'organizer_messages.dart';
 import '../../widgets/design_system.dart';
 
-class VendorDetailScreen extends StatelessWidget {
+class VendorDetailScreen extends StatefulWidget {
   final Vendor vendor;
 
   const VendorDetailScreen({super.key, required this.vendor});
+
+  @override
+  State<VendorDetailScreen> createState() => _VendorDetailScreenState();
+}
+
+class _VendorDetailScreenState extends State<VendorDetailScreen> {
+  bool _isBooking = false;
+  bool _isShortlisting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final eventId = context.read<EventProvider>().selectedEventId;
+      if (eventId != null) {
+        context.read<ShortlistProvider>().fetchShortlist(eventId);
+      }
+    });
+  }
+
+  Future<void> _toggleShortlist(String? eventId) async {
+    if (eventId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select an event first')));
+      return;
+    }
+
+    setState(() => _isShortlisting = true);
+    final shortlistProvider = context.read<ShortlistProvider>();
+    final isAlreadyShortlisted = shortlistProvider.isShortlisted(widget.vendor.id);
+
+    bool success;
+    if (isAlreadyShortlisted) {
+      final shortlistId = shortlistProvider.getShortlistId(widget.vendor.id);
+      success = await shortlistProvider.removeFromShortlist(eventId, shortlistId!);
+    } else {
+      success = await shortlistProvider.addToShortlist(eventId, widget.vendor.id);
+    }
+
+    if (mounted) setState(() => _isShortlisting = false);
+    
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(isAlreadyShortlisted ? 'Removed from shortlist' : 'Added to shortlist')),
+      );
+    }
+  }
+
+  Future<void> _requestBooking(String eventId) async {
+    setState(() => _isBooking = true);
+    final bookingProvider = context.read<BookingProvider>();
+    
+    final success = await bookingProvider.createBooking({
+      'event_id': eventId,
+      'vendor_id': widget.vendor.id,
+      'total_amount': widget.vendor.basePriceMin,
+      'notes': 'Requested via Synora App',
+    });
+
+    if (!mounted) return;
+    setState(() => _isBooking = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(success ? 'Booking request sent!' : (bookingProvider.error ?? 'Failed to send request')),
+        backgroundColor: success ? Colors.green : Colors.red,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final eventId = context.watch<EventProvider>().selectedEventId;
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          _buildSliverAppBar(context),
-          SliverToBoxAdapter(
-            child: AnimationLimiter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 375),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(child: widget),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            _buildSliverAppBar(context),
+            SliverToBoxAdapter(
+              child: AnimationLimiter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: AnimationConfiguration.toStaggeredList(
+                      duration: const Duration(milliseconds: 375),
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(child: widget),
+                      ),
+                      children: [
+                        _buildVendorHeader(context),
+                        const SizedBox(height: 24),
+                        _buildDescription(context),
+                        const SizedBox(height: 24),
+                        _buildActions(context, eventId),
+                        const SizedBox(height: 24),
+                      ],
                     ),
-                    children: [
-                      _buildVendorHeader(context),
-                      const SizedBox(height: 32),
-                      _buildDescription(context),
-                      const SizedBox(height: 32),
-                      _buildServices(context),
-                      const SizedBox(height: 32),
-                      _buildActions(context, eventId),
-                      const SizedBox(height: 40),
-                    ],
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -66,11 +134,14 @@ class VendorDetailScreen extends StatelessWidget {
         background: Stack(
           fit: StackFit.expand,
           children: [
-            vendor.imageUrl.isNotEmpty
-                ? Image.network(vendor.imageUrl, fit: BoxFit.cover)
-                : Container(
-                    child: const Icon(Icons.business, size: 100),
-                  ),
+            Image.network(
+              widget.vendor.imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: Colors.grey[800],
+                child: const Icon(Icons.business, size: 100, color: Colors.white24),
+              ),
+            ),
             const DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -98,18 +169,20 @@ class VendorDetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    vendor.name,
+                    widget.vendor.businessName,
                     style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, letterSpacing: -0.5),
                   ),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      vendor.category.name.toUpperCase(),
-                      style: const TextStyle(
+                      'VENDOR',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 10,
                         letterSpacing: 1,
@@ -125,9 +198,9 @@ class VendorDetailScreen extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.star_rounded, size: 20),
+                  const Icon(Icons.star_rounded, size: 20, color: Colors.amber),
                   const SizedBox(width: 4),
-                  Text(vendor.rating, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Text(widget.vendor.rating.toString(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ],
               ),
             ),
@@ -136,12 +209,12 @@ class VendorDetailScreen extends StatelessWidget {
         const SizedBox(height: 20),
         Row(
           children: [
-            Icon(Icons.location_on_outlined, size: 18),
+            const Icon(Icons.location_on_outlined, size: 18, color: Colors.grey),
             const SizedBox(width: 8),
-            const Text('Chennai, India', style: TextStyle(fontSize: 14)),
+            Text(widget.vendor.location, style: const TextStyle(fontSize: 14, color: Colors.grey)),
             const Spacer(),
             Text(
-              '₹${vendor.price}',
+              '₹${widget.vendor.basePriceMin.toInt()}',
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ],
@@ -158,59 +231,67 @@ class VendorDetailScreen extends StatelessWidget {
         const SizedBox(height: 12),
         GlassCard(
           padding: const EdgeInsets.all(16),
-          child: const Text(
-            'One of the most reputed vendors in the region, providing top-notch services for all kinds of events. We specialize in high-end luxury events and have over 10 years of experience.',
-            style: TextStyle(fontSize: 14, height: 1.6),
+          child: Text(
+            widget.vendor.description.isNotEmpty 
+                ? widget.vendor.description 
+                : 'No description provided by the vendor.',
+            style: const TextStyle(fontSize: 14, height: 1.6),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildServices(BuildContext context) {
-    final services = ['Premium Setup', 'On-site Support', 'Custom Packages', 'Equipment Rental'];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text('Services Offered', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: services.map((s) => _buildServiceChip(s)).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildServiceChip(String label) {
-    return GlassCard(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      borderRadius: BorderRadius.circular(12),
-      child: Text(
-        label,
-        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-      ),
-    );
-  }
-
   Widget _buildActions(BuildContext context, String? eventId) {
-    final vendorProvider = context.read<VendorProvider>();
-    final budgetProvider = context.read<BudgetProvider>();
-
     return Column(
       children: [
         Row(
           children: [
             Expanded(
               child: AnimatedPressable(
+                onTap: () => _toggleShortlist(eventId),
+                child: Consumer<ShortlistProvider>(
+                  builder: (context, shortlistProvider, child) {
+                    final isShortlisted = shortlistProvider.isShortlisted(widget.vendor.id);
+                    return GlassCard(
+                      color: isShortlisted ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            isShortlisted ? Icons.favorite : Icons.favorite_border,
+                            size: 20,
+                            color: isShortlisted ? Theme.of(context).primaryColor : null,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            isShortlisted ? 'Shortlisted' : 'Shortlist',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: isShortlisted ? Theme.of(context).primaryColor : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: AnimatedPressable(
                 onTap: () {
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => OrganizerChatScreen(name: vendor.name, phone: '+91 98765 43210')));
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => OrganizerChatScreen(name: widget.vendor.businessName, phone: '+91 98765 43210')));
                 },
-                child: GlassCard(
-                  opacity: 1.0,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: const Row(
+                child: const GlassCard(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.message_rounded, size: 20),
@@ -224,11 +305,10 @@ class VendorDetailScreen extends StatelessWidget {
             const SizedBox(width: 16),
             Expanded(
               child: AnimatedPressable(
-                onTap: () => _handleCall(context, vendor.name, '+91 98765 43210'),
-                child: GlassCard(
-                  opacity: 0.8,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: const Row(
+                onTap: () => _handleCall(context, widget.vendor.businessName, '+91 98765 43210'),
+                child: const GlassCard(
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.call_rounded, size: 20),
@@ -241,48 +321,29 @@ class VendorDetailScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 16),
-        AnimatedPressable(
-          onTap: () => vendorProvider.toggleShortlist(vendor.id),
-          child: GlassCard(
-            opacity: vendor.isShortlisted ? 0.1 : 0.05,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  vendor.isShortlisted ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  vendor.isShortlisted ? 'Shortlisted' : 'Add to Shortlist',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 24),
         const Divider(),
-        const SizedBox(height: 32),
+        const SizedBox(height: 24),
         AnimatedPressable(
-          onTap: eventId == null || vendor.isBooked
-              ? null
-              : () {
-                  vendorProvider.bookVendor(vendor.id);
-                  budgetProvider.addExpense(eventId, 'Booking: ${vendor.name}', vendor.price, vendor.category.name);
-                },
+          onTap: eventId == null || _isBooking
+              ? () {
+                  if (eventId == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please select an event first')),
+                    );
+                  }
+                }
+              : () => _requestBooking(eventId),
           child: GlassCard(
-            opacity: 1.0,
+            color: Theme.of(context).primaryColor,
             padding: const EdgeInsets.symmetric(vertical: 18),
             child: Center(
-              child: Text(
-                vendor.isBooked ? 'Already Booked' : 'Request Booking',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
+              child: _isBooking 
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text(
+                      'Request Booking',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+                    ),
             ),
           ),
         ),

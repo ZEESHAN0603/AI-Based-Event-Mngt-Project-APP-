@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import '../../providers/availability_provider.dart';
 import '../../widgets/synora_header.dart';
 import '../../widgets/design_system.dart';
 
@@ -10,84 +13,112 @@ class VendorCalendarScreen extends StatefulWidget {
 }
 
 class _VendorCalendarScreenState extends State<VendorCalendarScreen> {
-  // Mock data for availability
-  final Map<int, String> _dateStatus = {
-    10: 'booked',
-    12: 'booked',
-    15: 'blocked',
-    20: 'booked',
-    22: 'booked',
-    25: 'blocked',
-  };
+  DateTime _currentMonth = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AvailabilityProvider>().fetchMyAvailability();
+    });
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('yyyy-MM-dd').format(date);
+  }
+
+  Future<void> _toggleBlockedDate(DateTime date, String? existingId) async {
+    final provider = context.read<AvailabilityProvider>();
+    bool success;
+    if (existingId != null) {
+      success = await provider.removeBlockedDate(existingId);
+    } else {
+      success = await provider.blockDate(_formatDate(date));
+    }
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(success ? 'Availability updated!' : 'Failed to update availability'),
+          backgroundColor: success ? Colors.green : Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<AvailabilityProvider>();
+    final blockedDates = provider.blockedDates;
+    
+    // Simple calendar logic for current month
+    final daysInMonth = DateTime(_currentMonth.year, _currentMonth.month + 1, 0).day;
+    final monthName = DateFormat('MMMM yyyy').format(_currentMonth);
+
     return Scaffold(
       body: Column(
         children: [
           const SynoraHeader(
-            title: 'Event Calendar',
-            subtitle: 'Manage your availability',
+            title: 'Availability',
+            subtitle: 'Block dates when you are unavailable',
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(monthName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           ),
           _buildLegend(),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: GlassCard(
-                padding: const EdgeInsets.all(12),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 7,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: 31,
-                  itemBuilder: (context, index) {
-                    final day = index + 1;
-                    final status = _dateStatus[day] ?? 'available';
-                    Color color;
-                    switch (status) {
-                      case 'booked': color = Colors.red; break;
-                      case 'blocked': color = Colors.grey; break;
-                      default: color = Colors.green;
-                    }
-
-                    return AnimatedPressable(
-                      onTap: () => _showStatusDialog(day),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: color.withValues(alpha: 0.3),
-                            width: 1,
-                          ),
+              padding: const EdgeInsets.all(16),
+              child: provider.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : GlassCard(
+                      padding: const EdgeInsets.all(12),
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 7,
+                          childAspectRatio: 1,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
                         ),
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Text(
-                                day.toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
+                        itemCount: daysInMonth,
+                        itemBuilder: (context, index) {
+                          final day = index + 1;
+                          final date = DateTime(_currentMonth.year, _currentMonth.month, day);
+                          final blockedDateObj = blockedDates.cast<dynamic>().firstWhere(
+                                (d) => d.blockedDate.day == day && 
+                                       d.blockedDate.month == _currentMonth.month && 
+                                       d.blockedDate.year == _currentMonth.year,
+                                orElse: () => null,
+                              );
+                          
+                          final isBlocked = blockedDateObj != null;
+
+                          return AnimatedPressable(
+                            onTap: () => _toggleBlockedDate(date, blockedDateObj?.id),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: isBlocked ? Colors.grey.withOpacity(0.2) : Colors.green.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: isBlocked ? Colors.grey : Colors.green,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  day.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: isBlocked ? Colors.grey : Colors.green,
+                                  ),
                                 ),
                               ),
                             ),
-                            if (status != 'available')
-                              Positioned(
-                                top: 4,
-                                right: 4,
-                                child: CircleAvatar(
-                                  radius: 3,
-                                  backgroundColor: color,
-                                ),
-                              ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
             ),
           ),
         ],
@@ -97,12 +128,12 @@ class _VendorCalendarScreenState extends State<VendorCalendarScreen> {
 
   Widget _buildLegend() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _legendItem('Available', Colors.green),
-          _legendItem('Booked', Colors.red),
+          const SizedBox(width: 24),
           _legendItem('Blocked', Colors.grey),
         ],
       ),
@@ -118,42 +149,8 @@ class _VendorCalendarScreenState extends State<VendorCalendarScreen> {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 8),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            ),
-        ),
+        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
       ],
-    );
-  }
-
-  void _showStatusDialog(int day) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Day $day Availability', style: const TextStyle(fontWeight: FontWeight.bold)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _statusChoice(day, 'available', Colors.green, 'Available'),
-            _statusChoice(day, 'booked', Colors.red, 'Booked'),
-            _statusChoice(day, 'blocked', Colors.grey, 'Blocked/Personal'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _statusChoice(int day, String status, Color color, String label) {
-    return ListTile(
-      onTap: () {
-        setState(() => _dateStatus[day] = status);
-        Navigator.pop(context);
-      },
-      leading: CircleAvatar(radius: 8, backgroundColor: color),
-      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
     );
   }
 }

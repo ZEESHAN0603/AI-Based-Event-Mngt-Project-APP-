@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/event_provider.dart';
+import '../../services/recommendation_service.dart';
+import '../../models/recommendation.dart';
 
 class AIChatbotScreen extends StatefulWidget {
   const AIChatbotScreen({super.key});
@@ -12,9 +16,53 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   final List<Map<String, dynamic>> _messages = [
     {
       'role': 'bot',
-      'text': 'Hello! I am Nanban, your AI Assistant. How can I help you with your event planning today? You can ask about budget advice or vendor suggestions.',
+      'text': 'Hello! I am Nanban, your AI Assistant. I can help you with your event planning. If you have an event selected, I can recommend the best vendors for you!',
     },
   ];
+  bool _isRecommending = false;
+
+  Future<void> _getAiRecommendations() async {
+    final eventId = context.read<EventProvider>().selectedEventId;
+    if (eventId == null) {
+      _addBotMessage("Please select an event from your dashboard first so I can provide relevant recommendations.");
+      return;
+    }
+
+    setState(() => _isRecommending = true);
+    _addBotMessage("Analyzing vendors based on your event's budget, location, and date...");
+
+    try {
+      final result = await RecommendationService.getRecommendations(eventId);
+      if (result['statusCode'] == 200) {
+        final List<dynamic> recs = result['recommendations'];
+        if (recs.isEmpty) {
+          _addBotMessage("I couldn't find any approved vendors that match your event's criteria at the moment.");
+        } else {
+          final items = recs.map((j) => RecommendationItem.fromJson(j)).toList();
+          String response = "Based on my analysis, here are the top matches for you:\n\n";
+          for (var i = 0; i < items.take(3).length; i++) {
+            final item = items[i];
+            response += "${i + 1}. ${item.businessName} (Score: ${item.score})\n   Reason: ${item.reason}\n\n";
+          }
+          _addBotMessage(response);
+        }
+      } else {
+        _addBotMessage("I encountered an error while fetching recommendations. Please try again later.");
+      }
+    } catch (e) {
+      _addBotMessage("I'm having trouble connecting to my knowledge base. Check your connection!");
+    } finally {
+      if (mounted) setState(() => _isRecommending = false);
+    }
+  }
+
+  void _addBotMessage(String text) {
+    if (mounted) {
+      setState(() {
+        _messages.add({'role': 'bot', 'text': text});
+      });
+    }
+  }
 
   void _sendMessage() {
     if (_messageController.text.isEmpty) return;
@@ -25,30 +73,12 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
       _messageController.clear();
     });
 
-    _generateResponse(userMessage);
-  }
-
-  void _generateResponse(String userMessage) {
-    String response = '';
-    final lowerMsg = userMessage.toLowerCase();
-
-    if (lowerMsg.contains('budget') || lowerMsg.contains('advice')) {
-      response = 'For an event with your scale, I recommend allocating 40% to Venue, 30% to Catering, 15% to Decor, and 15% for miscellaneous. Check your Budget Overview for the current utilization!';
-    } else if (lowerMsg.contains('vendor') || lowerMsg.contains('suggestion')) {
-      response = 'Based on our top-rated partners, I suggest looking into "Royal Plaza Venue" for your location. They have great reviews for your event type.';
-    } else if (lowerMsg.contains('hello') || lowerMsg.contains('hi')) {
-      response = 'Hi there! Ready to make your event spectacular? Ask me anything about your budget or vendors.';
+    // Simple response logic
+    if (userMessage.toLowerCase().contains('recommend') || userMessage.toLowerCase().contains('vendor')) {
+      _getAiRecommendations();
     } else {
-      response = "That's interesting! Tell me more, or ask for \"budget advice\" or \"vendor suggestions\".";
+      _addBotMessage("That's interesting! I'm still learning how to chat, but I can certainly help with 'vendor recommendations' if you ask!");
     }
-
-    Future.delayed(const Duration(milliseconds: 600), () {
-      if (mounted) {
-        setState(() {
-          _messages.add({'role': 'bot', 'text': response});
-        });
-      }
-    });
   }
 
   @override
@@ -74,27 +104,23 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                     padding: const EdgeInsets.all(12),
                     constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
                     decoration: BoxDecoration(
-                      color: isBot ? Colors.white.withValues(alpha: 0.12) : Theme.of(context).primaryColor.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(12),
-                        topRight: const Radius.circular(12),
-                        bottomLeft: Radius.circular(isBot ? 0 : 12),
-                        bottomRight: Radius.circular(isBot ? 12 : 0),
-                      ),
-                      border: isBot ? Border.all(color: Colors.white.withValues(alpha: 0.1)) : null,
+                      color: isBot ? Colors.grey.withOpacity(0.1) : Theme.of(context).primaryColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       message['text'],
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color,
-                        fontSize: 14,
-                      ),
+                      style: const TextStyle(fontSize: 14),
                     ),
                   ),
                 );
               },
             ),
           ),
+          if (_isRecommending)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: LinearProgressIndicator(),
+            ),
           _buildInputArea(context),
         ],
       ),
@@ -105,34 +131,39 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.8),
-        border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.2))),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.2))),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: TextField(
-              controller: _messageController,
-              decoration: InputDecoration(
-                hintText: 'Type your message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide.none,
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _messageController,
+                  decoration: InputDecoration(
+                    hintText: 'Type "recommend vendors"...',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                  onSubmitted: (_) => _sendMessage(),
                 ),
-                filled: true,
-                fillColor: Theme.of(context).cardColor,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
-              onSubmitted: (_) => _sendMessage(),
-            ),
+              const SizedBox(width: 8),
+              CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: IconButton(
+                  icon: const Icon(Icons.send, color: Colors.white),
+                  onPressed: _sendMessage,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          CircleAvatar(
-            backgroundColor: Theme.of(context).primaryColor,
-            child: IconButton(
-              icon: const Icon(Icons.send, size: 20),
-              onPressed: _sendMessage,
-            ),
+          const SizedBox(height: 8),
+          TextButton.icon(
+            onPressed: _isRecommending ? null : _getAiRecommendations,
+            icon: const Icon(Icons.auto_awesome),
+            label: const Text('Get AI Recommendations'),
           ),
         ],
       ),

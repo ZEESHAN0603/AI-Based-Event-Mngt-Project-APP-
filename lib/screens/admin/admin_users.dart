@@ -24,7 +24,7 @@ class AdminUsersScreen extends StatelessWidget {
           Expanded(
             child: AnimationLimiter(
               child: ListView.builder(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(16),
                 itemCount: users.length,
                 itemBuilder: (context, index) {
                   final user = users[index];
@@ -71,7 +71,7 @@ class AdminUsersScreen extends StatelessWidget {
       
       builder: (context) => GlassCard(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,7 +102,7 @@ class AdminUsersScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             const Text('Account Statistics', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             const SizedBox(height: 16),
             _detailItem(Icons.event_rounded, 'Total Events', '${user.eventCount}', Theme.of(context).primaryColor),
@@ -112,7 +112,7 @@ class AdminUsersScreen extends StatelessWidget {
               user.isEnabled ? 'Active' : 'Disabled', 
               user.isEnabled ? Colors.teal : Colors.red
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: AnimatedPressable(
@@ -130,7 +130,7 @@ class AdminUsersScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Center(child: Text('Close', style: TextStyle(fontWeight: FontWeight.bold))),
+                  child: const Center(child: Text('Close', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white))),
                 ),
               ),
             ),

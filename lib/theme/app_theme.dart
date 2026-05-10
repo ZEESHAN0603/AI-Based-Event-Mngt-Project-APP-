@@ -4,18 +4,18 @@ class AppTheme {
 
 static ThemeData lightTheme = ThemeData(
 brightness: Brightness.light,
-scaffoldBackgroundColor: Color(0xFFF3E9DC),
-primaryColor: Color(0xFF5E3023),
+scaffoldBackgroundColor: const Color(0xFFF9FAFB),
+primaryColor: const Color(0xFF4F46E5),
 
 colorScheme: const ColorScheme.light(
-primary: Color(0xFF5E3023),
-secondary: Color(0xFFC08552),
+primary: Color(0xFF4F46E5),
+secondary: Color(0xFF0D9488),
 ),
 
 appBarTheme: const AppBarTheme(
 backgroundColor: Colors.transparent,
 elevation: 0,
-foregroundColor: Color(0xFF3B2A23),
+foregroundColor: Colors.black87,
 ),
 
 cardColor: Colors.white,
@@ -23,12 +23,12 @@ cardColor: Colors.white,
 
 static ThemeData darkTheme = ThemeData(
 brightness: Brightness.dark,
-scaffoldBackgroundColor: Color(0xFF2B1A14),
-primaryColor: Color(0xFFC08552),
+scaffoldBackgroundColor: const Color(0xFF111827),
+primaryColor: const Color(0xFF818CF8),
 
 colorScheme: const ColorScheme.dark(
-primary: Color(0xFFC08552),
-secondary: Color(0xFFC08552),
+primary: Color(0xFF818CF8),
+secondary: Color(0xFF2DD4BF),
 ),
 
 appBarTheme: const AppBarTheme(
@@ -36,7 +36,7 @@ backgroundColor: Colors.transparent,
 elevation: 0,
 ),
 
-cardColor: Color(0xFF3A231B),
+cardColor: const Color(0xFF1F2937),
 );
 
 }

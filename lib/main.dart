@@ -6,8 +6,11 @@ import 'providers/event_provider.dart';
 import 'providers/vendor_provider.dart';
 import 'providers/task_provider.dart';
 import 'providers/budget_provider.dart';
+import 'providers/booking_provider.dart';
+import 'providers/availability_provider.dart';
 import 'theme/theme_provider.dart';
 import 'providers/admin_provider.dart';
+import 'providers/shortlist_provider.dart';
 import 'screens/role_selection_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
@@ -24,34 +27,68 @@ void main() {
         ChangeNotifierProvider(create: (_) => BudgetProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => AdminProvider()),
+        ChangeNotifierProvider(create: (_) => BookingProvider()),
+        ChangeNotifierProvider(create: (_) => AvailabilityProvider()),
+        ChangeNotifierProvider(create: (_) => ShortlistProvider()),
       ],
       child: const SynoraApp(),
     ),
   );
 }
 
-class SynoraApp extends StatelessWidget {
+class SynoraApp extends StatefulWidget {
   const SynoraApp({super.key});
 
   @override
+  State<SynoraApp> createState() => _SynoraAppState();
+}
+
+class _SynoraAppState extends State<SynoraApp> {
+  bool _isInitializing = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    final userProvider = context.read<UserProvider>();
+    await userProvider.tryAutoLogin();
+    setState(() {
+      _isInitializing = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
+    if (_isInitializing) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
+    return Consumer2<ThemeProvider, UserProvider>(
+      builder: (context, themeProvider, userProvider, child) {
         return MaterialApp(
           title: 'Synora',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
-          initialRoute: '/role-selection',
+          initialRoute: userProvider.isAuthenticated ? '/home' : '/role-selection',
           routes: {
-        '/role-selection': (context) => const RoleSelectionScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const NavigationWrapper(),
-        },
-      );
-    },
-  );
-}
+            '/role-selection': (context) => const RoleSelectionScreen(),
+            '/login': (context) => const LoginScreen(),
+            '/signup': (context) => const SignUpScreen(),
+            '/home': (context) => const NavigationWrapper(),
+          },
+        );
+      },
+    );
+  }
 }

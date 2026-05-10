@@ -14,6 +14,8 @@ import '../screens/organizer/vendor_categories.dart';
 import '../screens/organizer/ideas_blogs.dart';
 import '../screens/organizer/profile_screen.dart';
 import '../screens/organizer/ai_chatbot.dart';
+import '../providers/event_provider.dart';
+import '../models/event.dart';
 
 class NavigationWrapper extends StatefulWidget {
   const NavigationWrapper({super.key});
@@ -29,14 +31,20 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
   Widget build(BuildContext context) {
     final UserProvider userProvider = context.watch<UserProvider>();
     final UserRole? role = userProvider.selectedRole;
+    final bool isAuthenticated = userProvider.isAuthenticated;
 
-    if (role == null) {
+    if (role == null || !isAuthenticated) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamedAndRemoveUntil('/role-selection', (route) => false);
+      });
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     if (role == UserRole.vendor) {
       return const VendorDashboard();
     }
+
+    final selectedEvent = context.watch<EventProvider>().selectedEvent;
 
     return PopScope(
       canPop: false,
@@ -52,7 +60,7 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
         }
       },
       child: Scaffold(
-          body: _getScreens(role)[_currentIndex],
+          body: _getScreens(role, selectedEvent)[_currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,
             onTap: (index) => setState(() => _currentIndex = index),
@@ -93,12 +101,14 @@ class _NavigationWrapperState extends State<NavigationWrapper> {
     ) ?? false;
   }
 
-  List<Widget> _getScreens(UserRole role) {
+  List<Widget> _getScreens(UserRole role, Event? selectedEvent) {
     switch (role) {
       case UserRole.organizer:
         return [
           const OrganizerDashboard(),
-          const VendorCategoriesScreen(),
+          selectedEvent != null 
+              ? VendorCategoriesScreen(event: selectedEvent)
+              : const Center(child: Text('Please select an event in Home first')),
           const BudgetOverviewScreen(),
           const IdeasBlogsScreen(),
           const ProfileScreen(),

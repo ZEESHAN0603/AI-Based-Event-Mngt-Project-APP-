@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../providers/event_provider.dart';
 import '../../models/event.dart';
 import '../../providers/vendor_provider.dart';
 import 'vendor_details.dart';
@@ -12,8 +13,11 @@ class EventDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vendorProvider = context.watch<VendorProvider>();
-    final shortlistedVendors = vendorProvider.getShortlistedVendors();
+    final eventProvider = context.watch<EventProvider>();
+    final currentEvent = eventProvider.events.firstWhere(
+      (e) => e.id == event.id,
+      orElse: () => event,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -24,60 +28,29 @@ class EventDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildInfoCard(context),
+            _buildInfoCard(context, currentEvent),
             const SizedBox(height: 24),
-            Text(
+            const Text(
               'Shortlisted Vendors',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
-            shortlistedVendors.isEmpty
-                ? const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(24.0),
-                      child: Text('No vendors shortlisted for this event yet.'),
-                    ),
-                  )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: shortlistedVendors.length,
-                    itemBuilder: (context, index) {
-                      final vendor = shortlistedVendors[index];
-                      return GlassContainer(
-                        child: ListTile(
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              vendor.imageUrl,
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          title: Text(vendor.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Text('${vendor.category.name} • ₹${vendor.price}'),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => VendorDetailScreen(vendor: vendor)),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: Text('Shortlisting features are coming soon in Phase 6 integration.'),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(BuildContext context) {
+  Widget _buildInfoCard(BuildContext context, Event currentEvent) {
     return GlassContainer(
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,18 +59,20 @@ class EventDetailsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    event.name,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
+                    currentEvent.name,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    event.type,
-                    style: const TextStyle(
+                    currentEvent.type,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
@@ -106,11 +81,11 @@ class EventDetailsScreen extends StatelessWidget {
               ],
             ),
             const Divider(height: 32),
-            _infoRow(context, Icons.calendar_today, 'Date', '${event.date.day}/${event.date.month}/${event.date.year}'),
+            _infoRow(context, Icons.calendar_today, 'Date', '${currentEvent.date.day}/${currentEvent.date.month}/${currentEvent.date.year}'),
             const SizedBox(height: 16),
-            _infoRow(context, Icons.location_on, 'Location', event.location),
+            _infoRow(context, Icons.location_on, 'Location', currentEvent.location),
             const SizedBox(height: 16),
-            _infoRow(context, Icons.attach_money, 'Budget', '₹${event.totalBudget}'),
+            _infoRow(context, Icons.attach_money, 'Budget', '₹${currentEvent.totalBudget}'),
           ],
         ),
       ),
@@ -120,12 +95,12 @@ class EventDetailsScreen extends StatelessWidget {
   Widget _infoRow(BuildContext context, IconData icon, String label, String value) {
     return Row(
       children: [
-        Icon(icon, size: 20),
+        Icon(icon, size: 20, color: Theme.of(context).primaryColor),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontSize: 12)),
+            Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
             Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           ],
         ),

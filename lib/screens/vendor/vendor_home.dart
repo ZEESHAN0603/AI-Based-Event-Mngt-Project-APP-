@@ -20,7 +20,7 @@ class VendorHomeScreen extends StatelessWidget {
           Expanded(
             child: AnimationLimiter(
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 children: AnimationConfiguration.toStaggeredList(
                   duration: const Duration(milliseconds: 375),
                   childAnimationBuilder: (widget) => SlideAnimation(
@@ -29,15 +29,15 @@ class VendorHomeScreen extends StatelessWidget {
                   ),
                   children: [
                     _buildAlertsSection(context),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
                     _buildStatsRow(context),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 16),
                     _buildTodaySchedule(context),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 16),
                     _buildRecentReviews(context),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 16),
                     _buildQuickActions(context),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -53,7 +53,7 @@ class VendorHomeScreen extends StatelessWidget {
       onTap: () => onTabChange?.call(2),
       child: GlassCard(
         opacity: 0.1,
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             Container(
@@ -89,7 +89,7 @@ class VendorHomeScreen extends StatelessWidget {
 
   Widget _statCard(BuildContext context, String label, String value, IconData icon, Color color) {
     return GlassCard(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -159,7 +159,7 @@ class VendorHomeScreen extends StatelessWidget {
 
   Widget _reviewMiniCard(String name, String comment, int stars) {
     return GlassCard(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -183,8 +183,10 @@ class VendorHomeScreen extends StatelessWidget {
       children: [
         const Text('Quick Actions', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          spacing: 12,
+          runSpacing: 16,
           children: [
             _actionItem(context, Icons.calendar_month_outlined, 'Availability', () => onTabChange?.call(3)),
             _actionItem(context, Icons.star_outline_rounded, 'Ratings', () {
@@ -205,7 +207,7 @@ class VendorHomeScreen extends StatelessWidget {
           GlassCard(
             blur: 10,
             opacity: 0.1,
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(14),
             borderRadius: BorderRadius.circular(20),
             child: Icon(icon, size: 28),
           ),

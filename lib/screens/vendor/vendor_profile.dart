@@ -54,12 +54,12 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           ),
           Expanded(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildProfileHeader(),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   _buildEditableField('Business Name', _nameController, Icons.business_outlined),
                   _buildEditableField('Category', _categoryController, Icons.category_outlined),
                   _buildEditableField('Location', _locationController, Icons.location_on_outlined),
@@ -81,7 +81,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                             style: TextStyle(fontSize: 14, height: 1.6),
                           ),
                         ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                     const Text('Portfolio Grid', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     _buildPortfolioGrid(),

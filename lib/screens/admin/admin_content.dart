@@ -35,7 +35,7 @@ class AdminContentScreen extends StatelessWidget {
                   )
                 : AnimationLimiter(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(16),
                       itemCount: contents.length,
                       itemBuilder: (context, index) {
                         final item = contents[index];
@@ -69,7 +69,7 @@ class AdminContentScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: GlassCard(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -165,7 +165,7 @@ class AdminContentScreen extends StatelessWidget {
               _buildTextField('Description', descController, maxLines: 3),
               const SizedBox(height: 16),
               _buildTextField('Source', sourceController),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
               AnimatedPressable(
                 onTap: () {
                   if (titleController.text.isNotEmpty) {

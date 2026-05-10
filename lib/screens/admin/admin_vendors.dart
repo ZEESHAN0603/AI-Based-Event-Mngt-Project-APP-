@@ -22,7 +22,7 @@ class _AdminVendorsScreenState extends State<AdminVendorsScreen> {
   Widget build(BuildContext context) {
     final vendorProvider = context.watch<VendorProvider>();
     final vendors = vendorProvider.vendors.where((v) {
-      final matchesSearch = v.name.toLowerCase().contains(_searchQuery.toLowerCase());
+      final matchesSearch = v.businessName.toLowerCase().contains(_searchQuery.toLowerCase());
       final matchesStatus = _statusFilter == null || v.status == _statusFilter;
       return matchesSearch && matchesStatus;
     }).toList();
@@ -44,13 +44,12 @@ class _AdminVendorsScreenState extends State<AdminVendorsScreen> {
                     padding: EdgeInsets.zero,
                     opacity: 0.1,
                     child: TextField(
-                      style: TextStyle(fontSize: 14),
-                      decoration: InputDecoration(
+                      style: const TextStyle(fontSize: 14),
+                      decoration: const InputDecoration(
                         hintText: 'Search vendors...',
-                        hintStyle: const TextStyle(),
-                        prefixIcon: const Icon(Icons.search_rounded),
+                        prefixIcon: Icon(Icons.search_rounded),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 15),
+                        contentPadding: EdgeInsets.symmetric(vertical: 15),
                       ),
                       onChanged: (value) => setState(() => _searchQuery = value),
                     ),
@@ -73,19 +72,19 @@ class _AdminVendorsScreenState extends State<AdminVendorsScreen> {
           ),
           Expanded(
             child: vendors.isEmpty
-                ? Center(
+                ? const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.business_rounded, size: 64),
-                        const SizedBox(height: 16),
-                        const Text('No vendors found', style: TextStyle(fontWeight: FontWeight.bold)),
+                        SizedBox(height: 16),
+                        Text('No vendors found', style: TextStyle(fontWeight: FontWeight.bold)),
                       ],
                     ),
                   )
                 : AnimationLimiter(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(16),
                       itemCount: vendors.length,
                       itemBuilder: (context, index) {
                         final vendor = vendors[index];
@@ -146,17 +145,17 @@ class _AdminVendorsScreenState extends State<AdminVendorsScreen> {
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: SynoraAvatar(name: vendor.name, size: 50),
-              title: Text(vendor.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              leading: SynoraAvatar(name: vendor.businessName, size: 50),
+              title: Text(vendor.businessName, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 4),
-                  Text('${vendor.category.name.toUpperCase()} • ${vendor.location}', style: const TextStyle(fontSize: 12)),
+                  Text('${vendor.categoryId.toUpperCase()} • ${vendor.location}', style: const TextStyle(fontSize: 12)),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: statusColor.withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
                     child: Text(
                       vendor.status.name.toUpperCase(),
                       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5, color: statusColor),
@@ -164,7 +163,7 @@ class _AdminVendorsScreenState extends State<AdminVendorsScreen> {
                   ),
                 ],
               ),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16, ),
+              trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => AdminVendorDetailScreen(vendor: vendor)));
               },
@@ -195,7 +194,7 @@ class _AdminVendorsScreenState extends State<AdminVendorsScreen> {
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
           child: Row(
             children: [
               Icon(icon, size: 16, color: color),

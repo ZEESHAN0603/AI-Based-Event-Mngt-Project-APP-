@@ -59,7 +59,7 @@ class _AdminBookingsScreenState extends State<AdminBookingsScreen> {
                   )
                 : AnimationLimiter(
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(16),
                       itemCount: bookings.length,
                       itemBuilder: (context, index) {
                         final booking = bookings[index];
@@ -115,7 +115,7 @@ class _AdminBookingsScreenState extends State<AdminBookingsScreen> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: GlassCard(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

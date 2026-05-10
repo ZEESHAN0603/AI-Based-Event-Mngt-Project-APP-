@@ -10,10 +10,13 @@ class AdminVendorDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vendorProvider = context.watch<VendorProvider>();
-    final currentVendor = vendorProvider.vendors.firstWhere((v) => v.id == vendor.id);
+    final currentVendor = vendorProvider.vendors.firstWhere(
+      (v) => v.id == vendor.id,
+      orElse: () => vendor,
+    );
 
     return Scaffold(
-      appBar: AppBar(title: Text(currentVendor.name)),
+      appBar: AppBar(title: Text(currentVendor.businessName)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -21,37 +24,35 @@ class AdminVendorDetailScreen extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.network(currentVendor.imageUrl, height: 200, width: double.infinity, fit: BoxFit.cover),
+              child: Image.network(
+                currentVendor.imageUrl, 
+                height: 200, 
+                width: double.infinity, 
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  height: 200,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.business, size: 64, color: Colors.grey),
+                ),
+              ),
             ),
             const SizedBox(height: 24),
             _buildHeader(currentVendor),
             const SizedBox(height: 24),
             _buildSectionTitle('Description'),
-            const Text(
-              'A premium service provider with over 10 years of experience in the industry. Known for attention to detail and exceptional customer service.',
-              style: TextStyle(fontSize: 14),
+            Text(
+              currentVendor.description.isNotEmpty 
+                  ? currentVendor.description 
+                  : 'A premium service provider with over 10 years of experience in the industry.',
+              style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: 24),
             _buildSectionTitle('Pricing & Information'),
-            _infoRow(Icons.monetization_on, 'Base Price', '₹${currentVendor.price}'),
+            _infoRow(Icons.monetization_on, 'Min Price', '₹${currentVendor.basePriceMin}'),
             _infoRow(Icons.location_on, 'Location', currentVendor.location),
             _infoRow(Icons.star, 'Rating', '${currentVendor.rating} / 5.0'),
-            _infoRow(Icons.work, 'Experience', '12+ Years'),
+            _infoRow(Icons.confirmation_number, 'GST Number', currentVendor.gstNumber),
             const SizedBox(height: 24),
-            _buildSectionTitle('Portfolio Preview'),
-            SizedBox(
-              height: 100,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: 4,
-                separatorBuilder: (context, i) => const SizedBox(width: 8),
-                itemBuilder: (context, i) => ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network('https://images.unsplash.com/photo-1511795409834-ef04bbd61622', width: 100, fit: BoxFit.cover),
-                ),
-              ),
-            ),
-            const SizedBox(height: 32),
             _buildActionButtons(context, vendorProvider, currentVendor),
           ],
         ),
@@ -74,12 +75,12 @@ class AdminVendorDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Text(v.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              child: Text(v.businessName, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: statusColor.withValues(alpha: 0.1),
+                color: statusColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -89,7 +90,7 @@ class AdminVendorDetailScreen extends StatelessWidget {
             ),
           ],
         ),
-        Text(v.category.name.toUpperCase(), style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text('CATEGORY ID: ${v.categoryId}', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.grey)),
       ],
     );
   }

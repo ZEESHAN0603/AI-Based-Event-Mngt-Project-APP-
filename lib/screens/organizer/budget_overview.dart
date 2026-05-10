@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/event_provider.dart';
+import '../../models/event.dart';
 import '../../providers/budget_provider.dart';
 import '../../widgets/synora_header.dart';
 import '../../widgets/glass_container.dart';
@@ -54,22 +55,23 @@ class BudgetOverviewScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildTotalBudgetCard(context, budget),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   _buildSectionHeader('Smart Insights', Icons.auto_awesome),
                   const SizedBox(height: 12),
                   _buildBudgetInsights(event, budget, expenses),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   _buildSectionHeader('Category recommendations', Icons.lightbulb_outline),
                   const SizedBox(height: 12),
-                  _buildRecommendationVisual(event.type, budget.totalBudget, event.requiredServices),
-                  const SizedBox(height: 32),
+                  _buildRecommendationVisual(event.type, budget.totalBudget),
+                  const SizedBox(height: 24),
                   _buildSectionHeader('Spending Breakdown', Icons.pie_chart_outline),
                   const SizedBox(height: 16),
                   _buildCategoryDistribution(context, expenses, budget.totalBudget),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 24),
                   _buildSectionHeader('Recent Expenses', Icons.history),
                   const SizedBox(height: 16),
                   _buildRecentExpensesList(context, expenses),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),
@@ -94,22 +96,22 @@ class BudgetOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalBudgetCard(BuildContext context, var budget) {
+  Widget _buildTotalBudgetCard(BuildContext context, dynamic budget) {
     final utilization = budget.totalBudget > 0 ? budget.spentAmount / budget.totalBudget : 0.0;
     
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Theme.of(context).primaryColor, Color(0xFF6A11CB)],
+          colors: [Theme.of(context).primaryColor, const Color(0xFF6A11CB)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -118,9 +120,22 @@ class BudgetOverviewScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Total Budget', style: TextStyle(fontSize: 14)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Total Budget', style: TextStyle(fontSize: 14, color: Colors.white70)),
+              IconButton(
+                icon: const Icon(Icons.edit, color: Colors.white, size: 20),
+                onPressed: () => _showEditBudgetDialog(context, budget),
+              ),
+            ],
+          ),
           const SizedBox(height: 4),
-          Text('₹${budget.totalBudget.toStringAsFixed(0)}', style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold)),
+          Text('₹${budget.totalBudget.toStringAsFixed(0)}', 
+            style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           const SizedBox(height: 24),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,7 +149,7 @@ class BudgetOverviewScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               value: utilization > 1.0 ? 1.0 : utilization,
-              backgroundColor: Colors.white.withValues(alpha: 0.2),
+              backgroundColor: Colors.white.withOpacity(0.2),
               valueColor: AlwaysStoppedAnimation<Color>(utilization > 0.9 ? Colors.orangeAccent : Colors.white),
               minHeight: 10,
             ),
@@ -149,24 +164,64 @@ class BudgetOverviewScreen extends StatelessWidget {
     );
   }
 
+  void _showEditBudgetDialog(BuildContext context, dynamic budget) {
+    final eventProvider = context.read<EventProvider>();
+    final event = eventProvider.selectedEvent!;
+    final controller = TextEditingController(text: event.totalBudget.toStringAsFixed(0));
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Total Budget'),
+        content: TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            labelText: 'Budget (₹)',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+              final newBudget = double.tryParse(controller.text);
+              if (newBudget != null) {
+                eventProvider.updateEvent(event.id, {
+                  'event_name': event.name,
+                  'budget': newBudget,
+                });
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSimpleStat(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12)),
-        Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(label, style: const TextStyle(fontSize: 12, color: Colors.white70)),
+        Text(value, 
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ],
     );
   }
 
   Widget _buildBudgetInsights(dynamic event, dynamic budget, List expenses) {
-    // Simple rule-based logic
     final Map<String, double> categoryTotals = {};
     for (var e in expenses) {
       categoryTotals[e.category] = (categoryTotals[e.category] ?? 0) + e.amount;
     }
 
-    final recommendations = _getRecommendationsForType(event.type, event.requiredServices);
+    final recommendations = _getRecommendationsForType(event.type);
     List<Widget> insightWidgets = [];
 
     recommendations.forEach((cat, percent) {
@@ -205,8 +260,8 @@ class BudgetOverviewScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRecommendationVisual(String eventType, double totalBudget, List<String> requiredServices) {
-    final recommendations = _getRecommendationsForType(eventType, requiredServices);
+  Widget _buildRecommendationVisual(String eventType, double totalBudget) {
+    final recommendations = _getRecommendationsForType(eventType);
     final colors = [Colors.blue, Colors.orange, Colors.purple, Colors.green, Colors.pink];
     
     return GlassContainer(
@@ -296,40 +351,27 @@ class BudgetOverviewScreen extends StatelessWidget {
     if (expenses.isEmpty) {
       return const Center(child: Text('No expenses recorded yet.'));
     }
-    return Column(
-      children: expenses.take(5).map<Widget>((e) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: expenses.length > 5 ? 5 : expenses.length,
+      itemBuilder: (context, index) {
+        final e = expenses[index];
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: _buildExpenseItem(
             context,
-            e.description ?? 'Expense',
+            e.title,
             e.date != null ? '${e.date.day}/${e.date.month}/${e.date.year}' : '',
             '₹${e.amount.toStringAsFixed(0)}',
             Icons.receipt_long_outlined,
           ),
         );
-      }).toList(),
+      },
     );
   }
 
-  Map<String, double> _getRecommendationsForType(String type, List<String> requiredServices) {
-    // If we have specific required services, distribute budget among them
-    if (requiredServices.isNotEmpty) {
-      final Map<String, double> recs = {};
-      double remaining = 100.0;
-      
-      // Basic weighted distribution
-      if (requiredServices.contains('venue')) { recs['Venue'] = 40; remaining -= 40; }
-      if (requiredServices.contains('catering')) { recs['Catering'] = 30; remaining -= 30; }
-      if (requiredServices.contains('photography')) { recs['Photography'] = 15; remaining -= 15; }
-      
-      if (remaining > 0) {
-        recs['Others'] = remaining;
-      }
-      return recs;
-    }
-
-    // Fallback to type-based defaults
+  Map<String, double> _getRecommendationsForType(String type) {
     switch (type) {
       case 'Wedding':
         return {'Venue': 40, 'Catering': 30, 'Photography': 15, 'Others': 15};
@@ -345,14 +387,14 @@ class BudgetOverviewScreen extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+        border: Border.all(color: Colors.grey.withOpacity(0.2)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: Theme.of(context).primaryColor),

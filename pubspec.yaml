@@ -38,10 +38,13 @@ dependencies:
   google_fonts: ^8.0.2
   flutter_svg: ^2.2.4
   intl: ^0.20.2
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.0
   animations: ^2.1.1
   shimmer: ^3.0.0
   flutter_staggered_animations: ^1.1.1
+  image_picker: ^1.2.2
+  http: ^1.2.0
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +57,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.3
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -67,6 +71,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icon/Synora.jpeg
     - assets/icon/synora_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -95,8 +100,17 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-flutter_icons:
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/Synora.jpeg"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon/Synora.jpeg"
+
+flutter_native_splash:
+  color: "#F9FAFB"
+  image: "assets/icon/synora_logo.png"
   android: true
   ios: true
-  image_path: "assets/icon/synora_logo.png"
+  fullscreen: true
 
