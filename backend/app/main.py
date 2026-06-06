@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.settings import get_settings
-from app.routes import health, auth, events, vendors, categories, availability, shortlists, bookings, recommendations
+from app.routes import health, auth, events, vendors, categories, availability, shortlists, bookings, recommendations, admin_routes
 
 settings = get_settings()
 
@@ -38,6 +38,7 @@ app.include_router(availability.router)
 app.include_router(shortlists.router)
 app.include_router(bookings.router)
 app.include_router(recommendations.router)
+app.include_router(admin_routes.router)
 
 @app.get("/")
 def root():

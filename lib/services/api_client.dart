@@ -6,7 +6,10 @@ class ApiClient {
   // IMPORTANT: Change this to your PC's local IP for physical device testing.
   // Use 'http://10.0.2.2:8000' for Android emulator.
   // Use 'http://127.0.0.1:8000' for web/desktop.
-  static const String baseUrl = 'http://10.129.158.174:8000';
+  static const String baseUrl = 'http://127.0.0.1:8000';
+
+  // Callback to handle unauthorized (401/403) responses globally.
+  static void Function()? onUnauthorized;
 
   static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();

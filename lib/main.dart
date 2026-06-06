@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'services/api_client.dart';
 import 'theme/app_theme.dart';
 import 'providers/user_provider.dart';
 import 'providers/event_provider.dart';
@@ -54,6 +55,11 @@ class _SynoraAppState extends State<SynoraApp> {
 
   Future<void> _initializeApp() async {
     final userProvider = context.read<UserProvider>();
+    // Global unauthorized handler
+    ApiClient.onUnauthorized = () {
+      userProvider.logout();
+      Navigator.of(context).pushNamedAndRemoveUntil('/role-selection', (route) => false);
+    };
     await userProvider.tryAutoLogin();
     setState(() {
       _isInitializing = false;
@@ -65,13 +71,10 @@ class _SynoraAppState extends State<SynoraApp> {
     if (_isInitializing) {
       return const MaterialApp(
         home: Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
+          body: Center(child: CircularProgressIndicator()),
         ),
       );
     }
-
     return Consumer2<ThemeProvider, UserProvider>(
       builder: (context, themeProvider, userProvider, child) {
         return MaterialApp(

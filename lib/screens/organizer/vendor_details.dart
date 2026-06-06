@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../providers/vendor_provider.dart';
 import '../../providers/event_provider.dart';
 import '../../providers/booking_provider.dart';
+import '../../providers/shortlist_provider.dart';
 import '../../models/vendor.dart';
 import 'organizer_messages.dart';
 import '../../widgets/design_system.dart';

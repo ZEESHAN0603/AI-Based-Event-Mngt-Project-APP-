@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../services/api_client.dart';
 import '../services/shortlist_service.dart';
+import 'dart:convert';
 import '../models/vendor.dart';
 
 class ShortlistProvider with ChangeNotifier {
@@ -16,7 +19,22 @@ class ShortlistProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _shortlistedItems = await ShortlistService.getEventShortlists(eventId);
+      final data = await ShortlistService.getEventShortlists(eventId);
+      // Enrich each shortlist item with full vendor details
+      final enriched = await Future.wait(data.map((item) async {
+        final vendorId = item['vendor_id'];
+        try {
+          final response = await ApiClient.get('/vendors/$vendorId');
+          final vendorData = response.body.isNotEmpty ? jsonDecode(response.body) : {};
+          final enrichedItem = Map<String, dynamic>.from(item);
+          enrichedItem['vendor'] = vendorData;
+          return enrichedItem;
+        } catch (e) {
+          // If fetching vendor fails, keep original item
+          return item;
+        }
+      }));
+      _shortlistedItems = enriched.cast<Map<String, dynamic>>();
       _error = null;
     } catch (e) {
       _error = 'Failed to load shortlist';
