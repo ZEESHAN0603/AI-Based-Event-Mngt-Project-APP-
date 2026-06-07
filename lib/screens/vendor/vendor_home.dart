@@ -545,6 +545,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, idx) {
               final req = requests[idx];
+              if (req is! Map) return const SizedBox.shrink();
               final String bookingId = req['id'] ?? '';
               final String name = req['organizer_name'] ?? 'Unknown Organizer';
               final String event = req['event_name'] ?? 'Unknown Event';
@@ -700,6 +701,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, idx) {
               final item = schedule[idx];
+              if (item is! Map) return const SizedBox.shrink();
               return AppCard(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -816,6 +818,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, idx) {
               final rev = reviews[idx];
+              if (rev is! Map) return const SizedBox.shrink();
               final stars = int.tryParse(rev['rating']?.toString() ?? '5') ?? 5;
               final comment = rev['comment'] ?? 'No comment provided';
               final name = rev['reviewer_name'] ?? 'Anonymous';
@@ -891,6 +894,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
             itemCount: activities.length,
             itemBuilder: (context, idx) {
               final act = activities[idx];
+              if (act is! Map) return const SizedBox.shrink();
               final title = act['title'] ?? '';
               final desc = act['description'] ?? '';
               final dateStr = act['created_at'] ?? '';

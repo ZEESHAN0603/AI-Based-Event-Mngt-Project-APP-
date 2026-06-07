@@ -62,9 +62,9 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 GestureDetector(
-                  onLongPressStart: (_) => _startLongPressTimer(),
-                  onLongPressEnd: (_) => _cancelLongPressTimer(),
-                  onLongPressUp: () => _cancelLongPressTimer(),
+                  onTapDown: (_) => _startLongPressTimer(),
+                  onTapUp: (_) => _cancelLongPressTimer(),
+                  onTapCancel: () => _cancelLongPressTimer(),
                   behavior: HitTestBehavior.opaque,
                   child: Column(
                     children: [

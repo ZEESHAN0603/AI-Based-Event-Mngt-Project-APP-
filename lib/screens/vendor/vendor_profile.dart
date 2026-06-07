@@ -164,7 +164,14 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           onTap: () {},
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network(_portfolioImages[index], fit: BoxFit.cover),
+            child: Image.network(
+              _portfolioImages[index],
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(
+                color: Colors.grey[200],
+                child: const Icon(Icons.broken_image, color: Colors.grey),
+              ),
+            ),
           ),
         );
       },
