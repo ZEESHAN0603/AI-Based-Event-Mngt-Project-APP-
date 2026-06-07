@@ -24,14 +24,6 @@ class _VendorDashboardState extends State<VendorDashboard> {
     const VendorProfileScreen(),
   ];
 
-  final List<String> _titles = [
-    'Dashboard',
-    'Messages',
-    'Bookings',
-    'Calendar',
-    'Profile',
-  ];
-
   @override
   Widget build(BuildContext context) {
 

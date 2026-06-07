@@ -98,7 +98,7 @@ class _VendorCalendarScreenState extends State<VendorCalendarScreen> {
                             onTap: () => _toggleBlockedDate(date, blockedDateObj?.id),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: isBlocked ? Colors.grey.withOpacity(0.2) : Colors.green.withOpacity(0.1),
+                                color: isBlocked ? Colors.grey.withValues(alpha: 0.2) : Colors.green.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
                                   color: isBlocked ? Colors.grey : Colors.green,

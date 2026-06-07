@@ -108,7 +108,7 @@ class _VendorBookingsScreenState extends State<VendorBookingsScreen> {
               ),
               trailing: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(color: statusColor.withOpacity(0.2), borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(color: statusColor.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(20)),
                 child: Text(status.toUpperCase(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 9, color: statusColor)),
               ),
             ),

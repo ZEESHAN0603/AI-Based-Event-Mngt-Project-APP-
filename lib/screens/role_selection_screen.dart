@@ -20,36 +20,13 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
   void _startLongPressTimer() {
     _longPressTimer = Timer(const Duration(seconds: 5), () {
       HapticFeedback.mediumImpact();
-      _showAdminAccessDialog();
+      _launchAdminDashboard();
     });
   }
 
   void _cancelLongPressTimer() {
     _longPressTimer?.cancel();
     _longPressTimer = null;
-  }
-
-  void _showAdminAccessDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Admin Access Detected'),
-        content: const Text('Open Admin Dashboard?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _launchAdminDashboard();
-            },
-            child: const Text('Open'),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> _launchAdminDashboard() async {
@@ -162,8 +139,12 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     return GlassContainer(
       child: InkWell(
         onTap: () {
-          context.read<UserProvider>().setRole(role);
-          Navigator.pushNamed(context, '/login');
+          if (isWebRedirect) {
+            _launchAdminDashboard();
+          } else {
+            context.read<UserProvider>().setRole(role);
+            Navigator.pushNamed(context, '/login');
+          }
         },
         borderRadius: BorderRadius.circular(12),
         child: Padding(

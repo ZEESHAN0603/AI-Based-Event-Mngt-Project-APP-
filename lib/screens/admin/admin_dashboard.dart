@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
-import '../../theme/theme_provider.dart';
+
 import '../../providers/admin_provider.dart';
 import '../../providers/vendor_provider.dart';
 import '../../models/vendor.dart';
@@ -14,7 +14,7 @@ class AdminDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = context.read<ThemeProvider>();
+    // final themeProvider = context.read<ThemeProvider>();
     final adminProvider = context.watch<AdminProvider>();
     final vendorProvider = context.watch<VendorProvider>();
 
@@ -125,7 +125,7 @@ class AdminDashboard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, size: 24, color: color),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/user_provider.dart';
+import '../../theme/app_theme.dart';
 import '../../widgets/design_system.dart';
 import '../../widgets/synora_header.dart';
 
@@ -85,6 +88,27 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                     const Text('Portfolio Grid', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 16),
                     _buildPortfolioGrid(),
+                    const SizedBox(height: 32),
+                    // ── Logout ────────────────────────────────────────────
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          context.read<UserProvider>().logout();
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/role-selection', (r) => false);
+                        },
+                        icon: const Icon(Icons.logout_rounded),
+                        label: const Text('Sign Out'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.error,
+                          side: const BorderSide(color: AppColors.error),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14)),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 100),
                 ],
               ),

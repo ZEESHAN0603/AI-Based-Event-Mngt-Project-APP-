@@ -118,7 +118,7 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
                   label: Text(cat['label']!),
                   selected: isSelected,
                   onSelected: (_) => _onCategorySelected(cat['value']!),
-                  selectedColor: theme.primaryColor.withOpacity(0.2),
+                  selectedColor: theme.primaryColor.withValues(alpha: 0.2),
                   checkmarkColor: theme.primaryColor,
                   labelStyle: TextStyle(
                     fontWeight:
@@ -130,7 +130,7 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
                   side: BorderSide(
                     color: isSelected
                         ? theme.primaryColor
-                        : Colors.grey.withOpacity(0.4),
+                        : Colors.grey.withValues(alpha: 0.4),
                   ),
                 );
               },
@@ -193,7 +193,7 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
           color: isDark ? Colors.grey[850] : Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -235,7 +235,7 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: theme.primaryColor.withOpacity(0.12),
+                            color: theme.primaryColor.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
@@ -305,11 +305,11 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: Container(
-        color: theme.primaryColor.withOpacity(0.08),
+        color: theme.primaryColor.withValues(alpha: 0.08),
         child: Icon(
           Icons.article_rounded,
           size: 48,
-          color: theme.primaryColor.withOpacity(0.4),
+          color: theme.primaryColor.withValues(alpha: 0.4),
         ),
       ),
     );
@@ -323,7 +323,7 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.newspaper_outlined,
-                size: 72, color: theme.primaryColor.withOpacity(0.4)),
+                size: 72, color: theme.primaryColor.withValues(alpha: 0.4)),
             const SizedBox(height: 20),
             const Text(
               'No articles found',
@@ -355,7 +355,7 @@ class _IdeasBlogsScreenState extends State<IdeasBlogsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.wifi_off_rounded,
-                size: 72, color: Colors.red.withOpacity(0.5)),
+                size: 72, color: Colors.red.withValues(alpha: 0.5)),
             const SizedBox(height: 20),
             const Text(
               'Could not load articles',

@@ -3,7 +3,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import '../../models/event.dart';
 import '../../providers/vendor_provider.dart';
-import '../../theme/app_theme.dart';
 import '../../widgets/design_system.dart';
 import '../../widgets/synora_header.dart';
 import 'vendor_list.dart';

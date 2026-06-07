@@ -12,6 +12,7 @@ import 'providers/availability_provider.dart';
 import 'theme/theme_provider.dart';
 import 'providers/admin_provider.dart';
 import 'providers/shortlist_provider.dart';
+import 'providers/vendor_dashboard_provider.dart';
 import 'screens/role_selection_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
@@ -31,6 +32,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => BookingProvider()),
         ChangeNotifierProvider(create: (_) => AvailabilityProvider()),
         ChangeNotifierProvider(create: (_) => ShortlistProvider()),
+        ChangeNotifierProvider(create: (_) => VendorDashboardProvider()),
       ],
       child: const EventLinkApp(),
     ),

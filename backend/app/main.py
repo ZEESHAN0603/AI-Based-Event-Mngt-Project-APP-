@@ -16,6 +16,7 @@ from app.routes import (
     vendor_status,
     blogs,
     ai_chat,
+    vendor_dashboard,
 )
 
 settings = get_settings()
@@ -56,6 +57,7 @@ app.include_router(admin_routes.router)
 app.include_router(vendor_status.router)
 app.include_router(blogs.router)
 app.include_router(ai_chat.router)
+app.include_router(vendor_dashboard.router)
 
 @app.get("/")
 def root():

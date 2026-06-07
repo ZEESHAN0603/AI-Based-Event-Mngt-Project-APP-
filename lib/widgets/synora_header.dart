@@ -9,12 +9,16 @@ class SynoraHeader extends StatelessWidget {
   final String title;
   final String? subtitle;
   final List<Widget>? actions;
+  final bool showBackButton;
+  final bool useBrandingLayout;
 
   const SynoraHeader({
     super.key,
     required this.title,
     this.subtitle,
     this.actions,
+    this.showBackButton = true,
+    this.useBrandingLayout = false,
   });
 
   @override
@@ -52,14 +56,57 @@ class SynoraHeader extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Back button or Logo
-                  if (Navigator.canPop(context))
+                  // Back button, Branding, or Logo
+                  if (showBackButton && Navigator.canPop(context))
                     IconButton(
                       icon: const Icon(Icons.arrow_back_ios_new_rounded,
                           color: Colors.white, size: 20),
                       onPressed: () => Navigator.pop(context),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                    )
+                  else if (useBrandingLayout)
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            'assets/icon/EventLink_App_Icon.jpeg',
+                            width: 38,
+                            height: 38,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => Container(
+                              width: 38,
+                              height: 38,
+                              color: Colors.white24,
+                              child: const Icon(Icons.event_note, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Planzo',
+                              style: GoogleFonts.outfit(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Text(
+                              'Smart Event Vendor Management',
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                color: Colors.white.withValues(alpha: 0.8),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     )
                   else
                     const SynoraLogo(size: 32, light: true),
@@ -93,25 +140,27 @@ class SynoraHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: GoogleFonts.outfit(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              if (subtitle != null) ...[
-                const SizedBox(height: 2),
+              if (!useBrandingLayout) ...[
+                const SizedBox(height: 12),
                 Text(
-                  subtitle!,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    color: Colors.white.withValues(alpha: 0.75),
-                    fontWeight: FontWeight.w400,
+                  title,
+                  style: GoogleFonts.outfit(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
+                if (subtitle != null) ...[
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle!,
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: Colors.white.withValues(alpha: 0.75),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ],
             ],
           ),

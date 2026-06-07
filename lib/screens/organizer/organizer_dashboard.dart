@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -48,8 +47,6 @@ class _OrganizerDashboardState extends State<OrganizerDashboard> {
   Widget build(BuildContext context) {
     final eventProvider = context.watch<EventProvider>();
     final user = context.watch<UserProvider>();
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: _loadData,

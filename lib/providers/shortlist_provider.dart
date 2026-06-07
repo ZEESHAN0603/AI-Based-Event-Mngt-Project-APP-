@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../services/api_client.dart';
 import '../services/shortlist_service.dart';
 import 'dart:convert';
-import '../models/vendor.dart';
 
 class ShortlistProvider with ChangeNotifier {
   List<Map<String, dynamic>> _shortlistedItems = [];

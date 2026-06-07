@@ -3,7 +3,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import '../../providers/admin_provider.dart';
 import '../../widgets/design_system.dart';
-import '../../theme/app_theme.dart';
 import '../../widgets/synora_header.dart';
 
 class AdminUsersScreen extends StatelessWidget {

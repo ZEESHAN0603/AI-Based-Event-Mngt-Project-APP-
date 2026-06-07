@@ -156,7 +156,6 @@ class _VendorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final shortlistProvider = context.watch<ShortlistProvider>();
     final eventId = context.read<EventProvider>().selectedEventId;
     final isShortlisted = shortlistProvider.isShortlisted(vendor.id);

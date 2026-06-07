@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../models/event.dart';
 import '../../providers/event_provider.dart';
-import '../../widgets/glass_container.dart';
 
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({super.key});
@@ -131,7 +129,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   Widget _buildDropdownField() {
     return DropdownButtonFormField<String>(
-      value: _selectedType,
+      initialValue: _selectedType,
       decoration: InputDecoration(
         labelText: 'Event Type',
         prefixIcon: const Icon(Icons.category),

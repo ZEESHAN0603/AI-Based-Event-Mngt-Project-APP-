@@ -236,7 +236,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                     color: isUser
                         ? theme.primaryColor
                         : (msg.isError
-                            ? Colors.red.withOpacity(0.1)
+                            ? Colors.red.withValues(alpha: 0.1)
                             : (isDark
                                 ? Colors.grey[800]
                                 : Colors.grey[100])),
@@ -250,7 +250,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                     ),
                     border: msg.isError
                         ? Border.all(
-                            color: Colors.red.withOpacity(0.3))
+                            color: Colors.red.withValues(alpha: 0.3))
                         : null,
                   ),
                   child: _buildMessageText(msg.text, isUser, theme),
@@ -270,7 +270,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
             const SizedBox(width: 8),
             CircleAvatar(
               radius: 14,
-              backgroundColor: theme.primaryColor.withOpacity(0.2),
+              backgroundColor: theme.primaryColor.withValues(alpha: 0.2),
               child: Icon(Icons.person,
                   size: 16, color: theme.primaryColor),
             ),
@@ -306,7 +306,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
   Widget _buildAvatar(ThemeData theme) {
     return CircleAvatar(
       radius: 16,
-      backgroundColor: theme.primaryColor.withOpacity(0.15),
+      backgroundColor: theme.primaryColor.withValues(alpha: 0.15),
       child: Text(
         '🤖',
         style: const TextStyle(fontSize: 16),
@@ -369,9 +369,9 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                 style: const TextStyle(fontSize: 12),
               ),
               onPressed: () => _sendMessage(_kSuggestions[index]),
-              backgroundColor: theme.primaryColor.withOpacity(0.08),
+              backgroundColor: theme.primaryColor.withValues(alpha: 0.08),
               side: BorderSide(
-                  color: theme.primaryColor.withOpacity(0.3)),
+                  color: theme.primaryColor.withValues(alpha: 0.3)),
               labelPadding:
                   const EdgeInsets.symmetric(horizontal: 4),
             );
@@ -411,7 +411,7 @@ class _AIChatbotScreenState extends State<AIChatbotScreen> {
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide(
-                      color: Colors.grey.withOpacity(0.2)),
+                      color: Colors.grey.withValues(alpha: 0.2)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
