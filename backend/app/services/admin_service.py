@@ -65,7 +65,35 @@ def list_events(supabase: Client):
     return supabase.table("events").select("*").execute()
 
 def list_bookings(supabase: Client):
-    return supabase.table("bookings").select("*").execute()
+    # We fetch bookings along with related events and vendors (and vendor_categories)
+    res = supabase.table("bookings").select(
+        "*, events(event_name), vendors(business_name, vendor_categories(name))"
+    ).execute()
+    
+    # Map the response to the flat structure requested by the frontend
+    mapped_bookings = []
+    for b in res.data:
+        event_data = b.get("events") or {}
+        vendor_data = b.get("vendors") or {}
+        category_data = vendor_data.get("vendor_categories") or {}
+        
+        mapped_bookings.append({
+            "id": b.get("id"),
+            "event_name": event_data.get("event_name", "Unknown Event"),
+            "vendor_name": vendor_data.get("business_name", "Unknown Vendor"),
+            "vendor_category": category_data.get("name", "Unknown Category"),
+            "total_amount": b.get("total_amount"),
+            "booking_status": b.get("booking_status"), # using booking_status to match frontend
+            "created_at": b.get("created_at")
+        })
+        
+    # Return an object that has `.data` to mimic Supabase APIResponse, 
+    # since `admin_routes.py` calls `list_bookings(client).data`
+    class MockResponse:
+        def __init__(self, data):
+            self.data = data
+            
+    return MockResponse(mapped_bookings)
 
 def get_analytics_stats(supabase: Client):
     # Dummy computation to avoid complex heavy db aggregations for now.
