@@ -32,19 +32,19 @@ void main() {
         ChangeNotifierProvider(create: (_) => AvailabilityProvider()),
         ChangeNotifierProvider(create: (_) => ShortlistProvider()),
       ],
-      child: const SynoraApp(),
+      child: const EventLinkApp(),
     ),
   );
 }
 
-class SynoraApp extends StatefulWidget {
-  const SynoraApp({super.key});
+class EventLinkApp extends StatefulWidget {
+  const EventLinkApp({super.key});
 
   @override
-  State<SynoraApp> createState() => _SynoraAppState();
+  State<EventLinkApp> createState() => _EventLinkAppState();
 }
 
-class _SynoraAppState extends State<SynoraApp> {
+class _EventLinkAppState extends State<EventLinkApp> {
   bool _isInitializing = true;
 
   @override
@@ -78,7 +78,7 @@ class _SynoraAppState extends State<SynoraApp> {
     return Consumer2<ThemeProvider, UserProvider>(
       builder: (context, themeProvider, userProvider, child) {
         return MaterialApp(
-          title: 'Synora',
+          title: 'EventLink',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

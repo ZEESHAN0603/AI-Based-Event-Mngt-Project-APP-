@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class DashboardStats(BaseModel):
     total_users: int
@@ -9,6 +10,13 @@ class DashboardStats(BaseModel):
 
 class VendorStatusUpdate(BaseModel):
     approved: bool
+
+class VendorRejectRequest(BaseModel):
+    reason: str
+
+class VendorStatusResponse(BaseModel):
+    status: str
+    reason: Optional[str] = None
 
 class UserStatusUpdate(BaseModel):
     enabled: bool

@@ -1,7 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from app.config.settings import get_settings
-from app.routes import health, auth, events, vendors, categories, availability, shortlists, bookings, recommendations, admin_routes
+from app.routes import (
+    health,
+    auth,
+    events,
+    vendors,
+    categories,
+    availability,
+    shortlists,
+    bookings,
+    recommendations,
+    admin_routes,
+    vendor_status,
+    blogs,
+    ai_chat,
+)
 
 settings = get_settings()
 
@@ -11,13 +26,12 @@ app = FastAPI(
     description=settings.APP_DESCRIPTION,
 )
 
-# Configure CORS
-# In production, you would restrict these origins
+# Configure CORS (development placeholder)
 origins = [
     "http://localhost",
     "http://localhost:3000",
     "http://localhost:8000",
-    "*" # Placeholder for dev
+    "*",
 ]
 
 app.add_middleware(
@@ -29,7 +43,7 @@ app.add_middleware(
 )
 
 # Include Routers
-app.include_router(health.router, tags=["Health"])
+app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(events.router)
 app.include_router(vendors.router)
@@ -39,6 +53,9 @@ app.include_router(shortlists.router)
 app.include_router(bookings.router)
 app.include_router(recommendations.router)
 app.include_router(admin_routes.router)
+app.include_router(vendor_status.router)
+app.include_router(blogs.router)
+app.include_router(ai_chat.router)
 
 @app.get("/")
 def root():

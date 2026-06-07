@@ -39,6 +39,7 @@ def create_vendor_profile(profile: VendorProfileCreate, current_user: dict, supa
         "rating": 0.0,
         "total_reviews": 0,
         "approved": False,
+        "approval_status": "pending",
         "created_at": created_at
     })
     
@@ -89,9 +90,16 @@ def get_approved_vendors(
     location: Optional[str] = None,
     min_price: Optional[float] = None,
     max_price: Optional[float] = None,
-    search: Optional[str] = None
+    available_date: Optional[str] = None,
+    search: Optional[str] = None,
+    sort_by: Optional[str] = None,
+    page: int = 1,
+    page_size: int = 20
 ):
     try:
+        start = (page - 1) * page_size
+        end = start + page_size - 1
+        
         query = supabase.table("vendors").select("*").eq("approved", True)
         
         if category_id:
@@ -105,8 +113,29 @@ def get_approved_vendors(
         if search:
             query = query.or_(f"business_name.ilike.%{search}%,location.ilike.%{search}%")
             
-        result = query.execute()
-        return result.data
+        if sort_by == "rating":
+            query = query.order("rating", desc=True)
+        elif sort_by == "price_asc":
+            query = query.order("base_price_min", desc=False)
+        else:
+            query = query.order("created_at", desc=True)
+            
+        result = query.range(start, end).execute()
+        vendors = result.data
+        # Ensure required fields for VendorResponse are present
+        for v in vendors:
+            v.setdefault("approval_status", "pending")
+            v.setdefault("approved_by", None)
+            v.setdefault("approved_at", None)
+            v.setdefault("rejection_reason", None)
+            v.setdefault("rating", 0.0)
+            v.setdefault("total_reviews", 0)
+        # Availability filter
+        if available_date:
+            blocked_res = supabase.table("vendor_availability").select("vendor_id").eq("blocked_date", available_date).execute()
+            blocked_ids = {item["vendor_id"] for item in blocked_res.data}
+            vendors = [v for v in vendors if v["id"] not in blocked_ids]
+        return vendors
     except Exception as e:
         print(f"SUPABASE SELECT ERROR: {repr(e)}")
         raise HTTPException(
@@ -122,7 +151,16 @@ def get_vendor_by_id(vendor_id: str, supabase: Client):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Vendor not found or not approved"
             )
-        return result.data[0]
+        vendor = result.data[0]
+        # Ensure all VendorResponse required/optional fields are present
+        # (older rows may pre-date approval_status column addition)
+        vendor.setdefault("approval_status", "approved")
+        vendor.setdefault("approved_by", None)
+        vendor.setdefault("approved_at", None)
+        vendor.setdefault("rejection_reason", None)
+        vendor.setdefault("rating", 0.0)
+        vendor.setdefault("total_reviews", 0)
+        return vendor
     except HTTPException:
         raise
     except Exception as e:

@@ -8,7 +8,7 @@ from app.services.admin_service import (
     list_users,
     set_user_status,
 )
-from app.schemas.admin_schemas import DashboardStats, UserStatusUpdate
+from app.schemas.admin_schemas import DashboardStats, UserStatusUpdate, VendorRejectRequest
 from app.config.supabase import get_supabase
 
 router = APIRouter(prefix="/admin", tags=["admin"], dependencies=[Depends(admin_required)])
@@ -28,15 +28,17 @@ def get_pending_vendors():
     client = get_supabase()
     return list_pending_vendors(client)
 
-@router.put("/vendors/{vendor_id}/approve")
-def approve_vendor(vendor_id: str):
+@router.patch("/vendors/{vendor_id}/approve")
+def approve_vendor(vendor_id: str, admin: dict = Depends(admin_required)):
     client = get_supabase()
-    return set_vendor_approval(vendor_id, True, client)
+    set_vendor_approval(vendor_id, True, admin["id"], client)
+    return {"message": "Vendor approved successfully"}
 
-@router.put("/vendors/{vendor_id}/reject")
-def reject_vendor(vendor_id: str):
+@router.patch("/vendors/{vendor_id}/reject")
+def reject_vendor(vendor_id: str, payload: VendorRejectRequest, admin: dict = Depends(admin_required)):
     client = get_supabase()
-    return set_vendor_approval(vendor_id, False, client)
+    set_vendor_approval(vendor_id, False, admin["id"], client, reason=payload.reason)
+    return {"message": "Vendor rejected"}
 
 @router.get("/users")
 def get_users():

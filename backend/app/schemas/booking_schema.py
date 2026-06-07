@@ -8,6 +8,9 @@ class BookingCreate(BaseModel):
     total_amount: float
     notes: Optional[str] = None
 
+class BookingRejectRequest(BaseModel):
+    reason: Optional[str] = None
+
 class BookingStatusUpdate(BaseModel):
     booking_status: str
 
@@ -15,7 +18,7 @@ class BookingStatusUpdate(BaseModel):
     @classmethod
     def validate_status(cls, v: str) -> str:
         v = v.lower()
-        allowed = ['accepted', 'rejected', 'completed', 'cancelled']
+        allowed = ['pending', 'accepted', 'rejected', 'cancelled', 'completed']
         if v not in allowed:
             raise ValueError(f'Status must be one of: {", ".join(allowed)}')
         return v
@@ -28,4 +31,5 @@ class BookingResponse(BaseModel):
     booking_status: str
     total_amount: float
     notes: Optional[str] = None
+    rejection_reason: Optional[str] = None
     created_at: datetime

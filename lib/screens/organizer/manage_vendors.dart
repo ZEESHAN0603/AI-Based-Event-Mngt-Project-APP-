@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/event.dart';
-import '../../providers/shortlist_provider.dart';
-import '../../providers/vendor_provider.dart';
-import '../../widgets/synora_header.dart';
-import '../../widgets/design_system.dart';
 import '../../models/vendor.dart';
+import '../../providers/shortlist_provider.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/design_system.dart';
+import '../../widgets/synora_header.dart';
 import 'vendor_details.dart';
 
 class ManageVendorsScreen extends StatefulWidget {
   final Event event;
-
   const ManageVendorsScreen({super.key, required this.event});
 
   @override
@@ -32,19 +31,22 @@ class _ManageVendorsScreenState extends State<ManageVendorsScreen> {
       body: Column(
         children: [
           SynoraHeader(
-            title: 'Event Vendors',
-            subtitle: 'Shortlisted for ${widget.event.name}',
+            title: 'Shortlisted Vendors',
+            subtitle: 'For ${widget.event.name}',
           ),
           Expanded(
             child: Consumer<ShortlistProvider>(
-              builder: (context, shortlistProvider, child) {
-                if (shortlistProvider.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+              builder: (context, provider, _) {
+                if (provider.isLoading) return _buildSkeleton();
 
-                final items = shortlistProvider.shortlistedItems;
+                final items = provider.shortlistedItems;
                 if (items.isEmpty) {
-                  return _buildEmptyState(context);
+                  return const AppEmptyState(
+                    icon: Icons.favorite_border_rounded,
+                    title: 'No Vendors Shortlisted',
+                    subtitle:
+                        'Browse vendors and add them to this event\'s shortlist.',
+                  );
                 }
 
                 return ListView.builder(
@@ -52,18 +54,27 @@ class _ManageVendorsScreenState extends State<ManageVendorsScreen> {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     final item = items[index];
-                    final vendorData = item['vendor'];
-                    
-                    // The backend might return full vendor object or just id
-                    // If it's a map, we can parse it
-                    if (vendorData is Map<String, dynamic>) {
-                      final vendor = Vendor.fromJson(vendorData);
-                      return _buildVendorTile(context, vendor, item['id']);
+                    final vendorData = item['vendor'] as Map<String, dynamic>?;
+
+                    if (vendorData == null || vendorData.isEmpty) {
+                      return const SizedBox.shrink();
                     }
 
-                    return ListTile(
-                      title: Text('Vendor ID: ${item['vendor_id']}'),
-                      subtitle: const Text('Details unavailable'),
+                    final vendor = Vendor.fromJson(vendorData);
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _VendorShortlistCard(
+                        vendor: vendor,
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => VendorDetailScreen(vendor: vendor)),
+                        ),
+                        onRemove: () => provider.removeFromShortlist(
+                          widget.event.id,
+                          item['id']?.toString() ?? '',
+                        ),
+                      ),
                     );
                   },
                 );
@@ -75,50 +86,113 @@ class _ManageVendorsScreenState extends State<ManageVendorsScreen> {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildSkeleton() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: 4,
+      itemBuilder: (_, __) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: SkeletonLoader(width: double.infinity, height: 90, borderRadius: 20),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Shortlist Card
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _VendorShortlistCard extends StatelessWidget {
+  final Vendor vendor;
+  final VoidCallback onTap;
+  final VoidCallback onRemove;
+
+  const _VendorShortlistCard({
+    required this.vendor,
+    required this.onTap,
+    required this.onRemove,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      onTap: onTap,
+      padding: const EdgeInsets.all(14),
+      child: Row(
         children: [
-          const Icon(Icons.favorite_border, size: 64, color: Colors.grey),
-          const SizedBox(height: 16),
-          const Text(
-            'No vendors shortlisted yet.',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+          // Avatar
+          SynoraAvatar(name: vendor.businessName, size: 52),
+          const SizedBox(width: 14),
+          // Details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  vendor.businessName,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 15),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 5),
+                Row(children: [
+                  const Icon(Icons.star_rounded,
+                      size: 13, color: Color(0xFFFBBF24)),
+                  const SizedBox(width: 3),
+                  Text(
+                    vendor.rating.toStringAsFixed(1),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    child: Text(
+                      vendor.location,
+                      style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ]),
+                const SizedBox(height: 5),
+                Text(
+                  '₹${_fmt(vendor.basePriceMin)} – ₹${_fmt(vendor.basePriceMax)}',
+                  style: const TextStyle(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Find Vendors'),
+          // Remove button
+          Column(
+            children: [
+              const Icon(Icons.chevron_right_rounded, color: Colors.grey),
+              const SizedBox(height: 4),
+              GestureDetector(
+                onTap: onRemove,
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.delete_outline_rounded,
+                      size: 16, color: AppColors.error),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildVendorTile(BuildContext context, Vendor vendor, String shortlistId) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: GlassCard(
-        padding: const EdgeInsets.all(8),
-        child: ListTile(
-          leading: SynoraAvatar(name: vendor.businessName),
-          title: Text(vendor.businessName, style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text('₹${vendor.basePriceMin.toInt()} • ${vendor.location}'),
-          trailing: IconButton(
-            icon: const Icon(Icons.delete_outline, color: Colors.red),
-            onPressed: () {
-              context.read<ShortlistProvider>().removeFromShortlist(widget.event.id, shortlistId);
-            },
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => VendorDetailScreen(vendor: vendor)),
-            );
-          },
-        ),
-      ),
-    );
+  String _fmt(double price) {
+    if (price >= 100000) return '${(price / 100000).toStringAsFixed(1)}L';
+    if (price >= 1000) return '${(price / 1000).toStringAsFixed(0)}K';
+    return price.toStringAsFixed(0);
   }
 }

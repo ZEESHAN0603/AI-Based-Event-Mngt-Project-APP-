@@ -18,20 +18,34 @@ def api_update_vendor_profile(profile_update: VendorProfileUpdate, current_user:
     """Update own vendor profile. Only allowed for vendors."""
     return update_vendor_profile(profile_update, current_user, supabase)
 
-@router.get("", response_model=List[VendorResponse])
+@router.get("/", response_model=List[VendorResponse])
 def api_get_vendors(
     category_id: Optional[str] = None,
     location: Optional[str] = None,
     min_price: Optional[float] = None,
     max_price: Optional[float] = None,
-    search: Optional[str] = None,
+    q: Optional[str] = Query(None, alias="q"),
+    available_date: Optional[str] = Query(None),
+    sort_by: Optional[str] = Query(
+    None,
+    pattern="^(name|price_low_high|price_high_low|newest)$"
+),
     current_user: dict = Depends(get_current_user),
     supabase: Client = Depends(get_supabase)
 ):
-    """Get all approved vendors. Requires authentication. Supports filtering and search."""
-    return get_approved_vendors(supabase, category_id, location, min_price, max_price, search)
+    """Get all approved vendors. Supports filtering, search, availability and sorting."""
+    return get_approved_vendors(
+        supabase,
+        category_id=category_id,
+        location=location,
+        min_price=min_price,
+        max_price=max_price,
+        search=q,
+        available_date=available_date,
+        sort_by=sort_by,
+    )
 
 @router.get("/{vendor_id}", response_model=VendorResponse)
-def api_get_vendor(vendor_id: str, current_user: dict = Depends(get_current_user), supabase: Client = Depends(get_supabase)):
+def api_get_vendor(vendor_id: str, supabase: Client = Depends(get_supabase)):
     """Get specific approved vendor details."""
     return get_vendor_by_id(vendor_id, supabase)

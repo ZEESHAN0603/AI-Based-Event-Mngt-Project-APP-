@@ -1,11 +1,15 @@
 from supabase import Client
-from ..schemas.admin_schemas import DashboardStats
+from ..schemas.admin_schemas import DashboardStats, VendorRejectRequest, VendorStatusResponse
+from datetime import datetime
+from typing import Optional
+
 
 def _extract_count(response):
     """Helper to get count from Supabase APIResponse."""
     if hasattr(response, 'count'):
         return response.count
     return len(response.data) if response.data else 0
+
 
 def get_dashboard_stats(supabase: Client) -> DashboardStats:
     users_res = supabase.table("users").select("id", count="exact").execute()
@@ -28,8 +32,28 @@ def list_vendors(supabase: Client):
 def list_pending_vendors(supabase: Client):
     return supabase.table("vendors").select("*").eq("approved", False).execute()
 
-def set_vendor_approval(vendor_id: str, approved: bool, supabase: Client):
-    return supabase.table("vendors").update({"approved": approved}).eq("id", vendor_id).execute()
+def set_vendor_approval(vendor_id: str, approved: bool, admin_id: str, supabase: Client, reason: Optional[str] = None):
+    """Update vendor approval status.
+    Parameters:
+        vendor_id: ID of the vendor to update.
+        approved: True for approval, False for rejection.
+        admin_id: ID of the admin performing the action.
+        supabase: Supabase client.
+        reason: Optional rejection reason when approved is False.
+    """
+    update_fields = {
+        "approved": approved,
+        "approval_status": "approved" if approved else "rejected",
+    }
+    if approved:
+        update_fields["approved_by"] = admin_id
+        update_fields["approved_at"] = datetime.utcnow().isoformat()
+        update_fields["rejection_reason"] = None
+    else:
+        update_fields["rejection_reason"] = reason or ""
+        update_fields["approved_by"] = None
+        update_fields["approved_at"] = None
+    return supabase.table("vendors").update(update_fields).eq("id", vendor_id).execute()
 
 def list_users(supabase: Client):
     return supabase.table("users").select("*").execute()

@@ -28,6 +28,10 @@ class VendorResponse(VendorProfileCreate):
     rating: float
     total_reviews: int
     approved: bool
+    approval_status: str
+    approved_by: Optional[int] = None
+    approved_at: Optional[datetime] = None
+    rejection_reason: Optional[str] = None
     created_at: datetime
 
 class CategoryResponse(BaseModel):

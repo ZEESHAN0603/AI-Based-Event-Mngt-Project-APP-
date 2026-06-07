@@ -5,6 +5,7 @@ from app.config.supabase import get_supabase
 from app.schemas.booking_schema import BookingCreate, BookingStatusUpdate, BookingResponse
 from app.services.booking_service import create_booking, get_organizer_bookings, get_vendor_bookings, update_booking_status
 from app.auth.jwt_handler import get_current_user
+from app.dependencies.vendor import vendor_required
 
 router = APIRouter(prefix="/bookings", tags=["Bookings"])
 
@@ -24,6 +25,6 @@ def api_get_vendor_bookings(current_user: dict = Depends(get_current_user), supa
     return get_vendor_bookings(current_user, supabase)
 
 @router.put("/{booking_id}/status", response_model=BookingResponse)
-def api_update_booking_status(booking_id: str, status_update: BookingStatusUpdate, current_user: dict = Depends(get_current_user), supabase: Client = Depends(get_supabase)):
-    """Update booking status. Only allowed for the assigned vendor."""
+def api_update_booking_status(booking_id: str, status_update: BookingStatusUpdate, current_user: dict = Depends(vendor_required), supabase: Client = Depends(get_supabase)):
+    """Vendor updates a booking status with proper ownership validation and transition checks."""
     return update_booking_status(booking_id, status_update, current_user, supabase)

@@ -1,233 +1,297 @@
 import 'package:flutter/material.dart';
-import '../../theme/app_theme.dart';
-import '../../widgets/synora_header.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../providers/user_provider.dart';
-import '../../widgets/glass_container.dart';
-import '../role_selection_screen.dart';
+import '../../providers/event_provider.dart';
+import '../../providers/shortlist_provider.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/design_system.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  bool _notificationsEnabled = true;
-  bool _isEditing = false;
-  late TextEditingController _nameController;
-  late TextEditingController _phoneController;
-  late TextEditingController _emailController;
-  File? _imageFile;
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _nameController = TextEditingController(text: 'John Doe');
-    _phoneController = TextEditingController(text: '+1 234 567 890');
-    _emailController = TextEditingController(text: 'john.doe@example.com');
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _phoneController.dispose();
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserProvider>();
+    final events = context.watch<EventProvider>().events;
+    final shortlisted = context.watch<ShortlistProvider>().shortlistedItems;
+    final name = user.userName;
+    final email = user.userEmail;
+    final role = user.selectedRole;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      body: Column(
-        children: [
-          SynoraHeader(
-            title: 'My Profile',
-            subtitle: 'Manage your personal balance',
-            actions: [
-              IconButton(
-                icon: Icon(_isEditing ? Icons.close : Icons.edit),
-                onPressed: () {
-                  setState(() => _isEditing = !_isEditing);
-                },
-              ),
-            ],
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // ── Gradient Header ─────────────────────────────────────────
+            _buildHeader(context, name, email, role),
+            // ── Stats ───────────────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
+              child: Row(
                 children: [
-                  _buildProfileHeader(),
-                  const SizedBox(height: 24),
-                  _buildSectionTitle('Basic Information'),
-                  _buildInfoCard([
-                    _buildInfoRow(Icons.person, 'Name', 'John Doe', controller: _nameController),
-                    _buildInfoRow(Icons.phone, 'Phone', '+1 234 567 890', controller: _phoneController),
-                    _buildInfoRow(Icons.email, 'Email', 'john.doe@example.com', controller: _emailController),
-                    _buildInfoRow(Icons.location_city, 'City', 'New York'),
-                  ]),
-                  const SizedBox(height: 24),
-                  _buildSectionTitle('Settings'),
-                  _buildInfoCard([
-                    _buildToggleRow(Icons.notifications, 'Notifications', _notificationsEnabled, (val) {
-                      setState(() => _notificationsEnabled = val);
-                    }),
-                  ]),
-                  const SizedBox(height: 48),
-                  _buildActions(context),
+                  _statCard(context, '${events.length}', 'Events', Icons.event_rounded),
+                  const SizedBox(width: 12),
+                  _statCard(context, '${shortlisted.length}', 'Shortlisted', Icons.favorite_rounded),
+                  const SizedBox(width: 12),
+                  _statCard(context, '0', 'Bookings', Icons.book_online_rounded),
                 ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 24),
+            // ── Account Info ────────────────────────────────────────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Account',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 12),
+                  AppCard(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        _listTile(
+                          icon: Icons.person_rounded,
+                          iconColor: AppColors.primary,
+                          title: 'Name',
+                          subtitle: name.isEmpty ? 'Not set' : name,
+                        ),
+                        _divider(isDark),
+                        _listTile(
+                          icon: Icons.email_rounded,
+                          iconColor: AppColors.secondary,
+                          title: 'Email',
+                          subtitle: email.isEmpty ? 'Not set' : email,
+                        ),
+                        _divider(isDark),
+                        _listTile(
+                          icon: Icons.badge_rounded,
+                          iconColor: AppColors.warning,
+                          title: 'Role',
+                          subtitle: _roleLabel(role),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  // ── Settings ──────────────────────────────────────────
+                  const Text('Settings',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 12),
+                  AppCard(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        _listTile(
+                          icon: Icons.notifications_rounded,
+                          iconColor: AppColors.success,
+                          title: 'Notifications',
+                          subtitle: 'Manage alerts and reminders',
+                          trailing: const Icon(Icons.chevron_right_rounded),
+                        ),
+                        _divider(isDark),
+                        _listTile(
+                          icon: Icons.security_rounded,
+                          iconColor: AppColors.error,
+                          title: 'Privacy & Security',
+                          subtitle: 'Manage your data',
+                          trailing: const Icon(Icons.chevron_right_rounded),
+                        ),
+                        _divider(isDark),
+                        _listTile(
+                          icon: Icons.help_outline_rounded,
+                          iconColor: Colors.grey,
+                          title: 'Help & Support',
+                          subtitle: 'FAQs and contact',
+                          trailing: const Icon(Icons.chevron_right_rounded),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // ── Logout ────────────────────────────────────────────
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: () {
+                        context.read<UserProvider>().logout();
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/role-selection', (r) => false);
+                      },
+                      icon: const Icon(Icons.logout_rounded),
+                      label: const Text('Sign Out'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.error,
+                        side: const BorderSide(color: AppColors.error),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+                  // ── App version ───────────────────────────────────────
+                  Center(
+                    child: Text(
+                      'EventLink v1.0.0 • Made with ❤️',
+                      style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildActions(BuildContext context) {
-    return Column(
-      children: [
-        if (_isEditing)
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() => _isEditing = false);
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile Saved Successfully')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text('Save Changes'),
-            ),
-          ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () {
-              context.read<UserProvider>().logout();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/role-selection',
-                (route) => false,
-              );
-            },
-            icon: const Icon(Icons.logout),
-            label: const Text('Logout'),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.red,
-              side: const BorderSide(color: Colors.red),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-            ),
-          ),
+  Widget _buildHeader(
+      BuildContext context, String name, String email, UserRole? role) {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [AppColors.primary, AppColors.secondary],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-      ],
-    );
-  }
-
-  Widget _buildProfileHeader() {
-    return Center(
-      child: Column(
-        children: [
-          Stack(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+          child: Column(
             children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: _imageFile != null 
-                    ? FileImage(_imageFile!) as ImageProvider
-                    : const NetworkImage('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e'),
-              ),
-              if (_isEditing)
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 2),
-                      ),
-                      child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
+              // Avatar
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2.5),
+                ),
+                child: Center(
+                  child: Text(
+                    name.isNotEmpty ? name[0].toUpperCase() : 'U',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                name.isEmpty ? 'User' : name,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                email,
+                style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.8), fontSize: 13),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+                ),
+                child: Text(
+                  _roleLabel(role),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 16),
-          Text(
-            _nameController.text,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-          ),
-          Text(
-            'Event Organizer',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _statCard(BuildContext context, String value, String label, IconData icon) {
+    return Expanded(
+      child: AppCard(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        child: Column(
+          children: [
+            Icon(icon, size: 22, color: AppColors.primary),
+            const SizedBox(height: 8),
+            Text(value,
+                style: const TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 2),
+            Text(label,
+                style: TextStyle(fontSize: 11, color: Colors.grey[500])),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _listTile({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String subtitle,
+    Widget? trailing,
+  }) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      leading: Container(
+        width: 38,
+        height: 38,
+        decoration: BoxDecoration(
+          color: iconColor.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, size: 18, color: iconColor),
+      ),
+      title: Text(title,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+      subtitle: Text(subtitle,
+          style: TextStyle(fontSize: 12, color: Colors.grey[500])),
+      trailing: trailing,
+    );
+  }
+
+  Widget _divider(bool isDark) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0, left: 4.0),
-      child: Text(
-        title,
-        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.only(left: 70, right: 16),
+      child: Divider(
+        height: 1,
+        color: isDark
+            ? Colors.white.withValues(alpha: 0.06)
+            : const Color(0xFFE2E8F0),
       ),
     );
   }
 
-  Widget _buildInfoCard(List<Widget> children) {
-    return GlassContainer(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(children: children),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String label, String value, {TextEditingController? controller}) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label, style: const TextStyle(fontSize: 14)),
-      subtitle: _isEditing && controller != null
-          ? TextField(
-              controller: controller,
-              decoration: const InputDecoration(isDense: true, contentPadding: EdgeInsets.symmetric(vertical: 8)),
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            )
-          : Text(controller?.text ?? value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-    );
-  }
-
-  Widget _buildToggleRow(IconData icon, String label, bool value, Function(bool) onChanged) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-      trailing: Switch(
-        value: value,
-        onChanged: onChanged,
-        activeThumbColor: Theme.of(context).primaryColor,
-      ),
-    );
+  String _roleLabel(UserRole? role) {
+    switch (role) {
+      case UserRole.organizer: return '🎉 Event Organizer';
+      case UserRole.vendor: return '🏪 Vendor';
+      case UserRole.admin: return '🛡️ Administrator';
+      default: return 'User';
+    }
   }
 }

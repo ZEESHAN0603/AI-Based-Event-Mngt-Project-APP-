@@ -71,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Map<String, dynamic>> _getMessagesForUser(String name, bool isNew) {
     if (isNew) {
       return [
-        {'text': 'Hi! I saw your profile on Synora and want to book you for my event.', 'isMe': false, 'time': 'Just now'},
+        {'text': 'Hi! I saw your profile on EventLink and want to book you for my event.', 'isMe': false, 'time': 'Just now'},
         {'text': 'Hello! Thanks for reaching out. Which event are you planning?', 'isMe': true, 'time': 'Just now'},
       ];
     }

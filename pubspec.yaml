@@ -71,8 +71,7 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/icon/Synora.jpeg
-    - assets/icon/synora_logo.png
+    - assets/icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -103,14 +102,15 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/Synora.jpeg"
+  image_path: "assets/icon/EventLink_App_Icon.jpeg"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icon/Synora.jpeg"
+  adaptive_icon_foreground: "assets/icon/EventLink_App_Icon.jpeg"
 
 flutter_native_splash:
   color: "#F9FAFB"
-  image: "assets/icon/synora_logo.png"
+  image: "assets/icon/EventLink_Splash_Logo.jpeg"
   android: true
   ios: true
+  web: true
   fullscreen: true
 

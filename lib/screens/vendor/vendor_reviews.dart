@@ -10,7 +10,7 @@ class VendorReviewsScreen extends StatelessWidget {
       {'name': 'Amit Pathak', 'rating': '5', 'date': '12 Mar 2024', 'comment': 'The food was absolutely delicious! Every guest praised the catering. Highly recommended for weddings.'},
       {'name': 'Sangeeta Roy', 'rating': '4', 'date': '10 Mar 2024', 'comment': 'Very professional team. They managed the crowd well, though the dessert refill was a bit slow.'},
       {'name': 'Vikram Malhotra', 'rating': '5', 'date': '08 Mar 2024', 'comment': 'Top-notch service. The presentation was elegant and the staff was extremely polite.'},
-      {'name': 'Neha Gupta', 'rating': '5', 'date': '05 Mar 2024', 'comment': 'Synora recommended them for my engagement. Best decision ever! The snacks were the highlight.'},
+      {'name': 'Neha Gupta', 'rating': '5', 'date': '05 Mar 2024', 'comment': 'EventLink recommended them for my engagement. Best decision ever! The snacks were the highlight.'},
       {'name': 'Rajesh Khanna', 'rating': '3', 'date': '01 Mar 2024', 'comment': 'Food was good but the communication before the event could have been better.'},
       {'name': 'Priya Sharma', 'rating': '5', 'date': '28 Feb 2024', 'comment': 'The menu customization they offered was great. Everyone loved the traditional dishes.'},
       {'name': 'Anil Kapoor', 'rating': '4', 'date': '25 Feb 2024', 'comment': 'Punctual and efficient. They handled the corporate lunch with great grace.'},
