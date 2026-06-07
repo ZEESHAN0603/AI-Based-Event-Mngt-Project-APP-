@@ -60,3 +60,71 @@ def list_users(supabase: Client):
 
 def set_user_status(user_id: str, enabled: bool, supabase: Client):
     return supabase.table("users").update({"enabled": enabled}).eq("id", user_id).execute()
+
+def list_events(supabase: Client):
+    return supabase.table("events").select("*").execute()
+
+def list_bookings(supabase: Client):
+    return supabase.table("bookings").select("*").execute()
+
+def get_analytics_stats(supabase: Client):
+    # Dummy computation to avoid complex heavy db aggregations for now.
+    # In a real scenario, this would aggregate data from bookings, users, and events.
+    # We will simulate the growth data structure required by the frontend but fetch actual totals.
+    users_res = supabase.table("users").select("id", count="exact").execute()
+    vendors_res = supabase.table("vendors").select("id", count="exact").execute()
+    events_res = supabase.table("events").select("id", count="exact").execute()
+    
+    total_users = _extract_count(users_res)
+    total_vendors = _extract_count(vendors_res)
+    total_events = _extract_count(events_res)
+    
+    # Let's sum up total amount of confirmed bookings if we can. Or just dummy it.
+    bookings_res = supabase.table("bookings").select("total_amount").eq("booking_status", "confirmed").execute()
+    net_revenue = sum([b.get("total_amount", 0) for b in bookings_res.data]) if bookings_res.data else 0
+
+    return {
+        "monthly_growth": 15.5,
+        "active_users": total_users + total_vendors,
+        "event_volume": total_events,
+        "net_revenue": net_revenue,
+        "growth_data": [
+            {"month": "Jan", "vendors": 10, "organizers": 2, "revenue": 5000},
+            {"month": "Feb", "vendors": 15, "organizers": 4, "revenue": 8000},
+            {"month": "Mar", "vendors": 22, "organizers": 6, "revenue": 15000},
+            {"month": "Apr", "vendors": 31, "organizers": 8, "revenue": 28000},
+            {"month": "May", "vendors": 42, "organizers": 10, "revenue": 42000},
+            {"month": "Jun", "vendors": total_vendors, "organizers": total_users, "revenue": net_revenue},
+        ],
+        "category_stats": [
+            {"name": "Wedding Hall", "value": 45, "color": "#5B4CF0"},
+            {"name": "Catering", "value": 30, "color": "#3EA0FF"},
+            {"name": "Decoration", "value": 15, "color": "#F4A622"},
+            {"name": "Photographer", "value": 10, "color": "#C56CE6"},
+        ]
+    }
+
+def get_admin_profile(admin_id: str, supabase: Client):
+    res = supabase.table("admin_settings").select("*").eq("admin_id", admin_id).execute()
+    if res.data:
+        return res.data[0]
+    return {
+        "admin_id": admin_id,
+        "display_name": "Admin User",
+        "timezone": "UTC",
+        "theme": "light",
+        "notifications_enabled": True
+    }
+
+def update_admin_profile(admin_id: str, profile_data: dict, supabase: Client):
+    # Check if exists
+    res = supabase.table("admin_settings").select("id").eq("admin_id", admin_id).execute()
+    payload = {k: v for k, v in profile_data.items() if v is not None}
+    
+    if res.data:
+        updated = supabase.table("admin_settings").update(payload).eq("admin_id", admin_id).execute()
+        return updated.data[0] if updated.data else {}
+    else:
+        payload["admin_id"] = admin_id
+        inserted = supabase.table("admin_settings").insert(payload).execute()
+        return inserted.data[0] if inserted.data else {}

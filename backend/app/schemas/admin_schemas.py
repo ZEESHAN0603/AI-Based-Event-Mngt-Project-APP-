@@ -20,3 +20,34 @@ class VendorStatusResponse(BaseModel):
 
 class UserStatusUpdate(BaseModel):
     enabled: bool
+
+class CategoryDistribution(BaseModel):
+    name: str
+    value: int
+    color: str
+
+class MonthlyGrowth(BaseModel):
+    month: str
+    vendors: int
+    organizers: int
+    revenue: float
+
+class AnalyticsStats(BaseModel):
+    monthly_growth: float
+    active_users: int
+    event_volume: int
+    net_revenue: float
+    growth_data: list[MonthlyGrowth]
+    category_stats: list[CategoryDistribution]
+
+class AdminProfile(BaseModel):
+    display_name: str
+    timezone: str
+    theme: str
+    notifications_enabled: bool
+
+class AdminProfileUpdate(BaseModel):
+    display_name: Optional[str] = None
+    timezone: Optional[str] = None
+    theme: Optional[str] = None
+    notifications_enabled: Optional[bool] = None

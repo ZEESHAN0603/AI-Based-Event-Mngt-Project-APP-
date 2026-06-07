@@ -8,7 +8,14 @@ from app.services.admin_service import (
     list_users,
     set_user_status,
 )
-from app.schemas.admin_schemas import DashboardStats, UserStatusUpdate, VendorRejectRequest
+from app.schemas.admin_schemas import (
+    DashboardStats, 
+    UserStatusUpdate, 
+    VendorRejectRequest,
+    AnalyticsStats,
+    AdminProfile,
+    AdminProfileUpdate
+)
 from app.config.supabase import get_supabase
 
 router = APIRouter(prefix="/admin", tags=["admin"], dependencies=[Depends(admin_required)])
@@ -49,3 +56,33 @@ def get_users():
 def update_user_status(user_id: str, payload: UserStatusUpdate):
     client = get_supabase()
     return set_user_status(user_id, payload.enabled, client)
+
+@router.get("/events")
+def get_all_events():
+    from app.services.admin_service import list_events
+    client = get_supabase()
+    return list_events(client).data
+
+@router.get("/bookings")
+def get_all_bookings():
+    from app.services.admin_service import list_bookings
+    client = get_supabase()
+    return list_bookings(client).data
+
+@router.get("/analytics", response_model=AnalyticsStats)
+def get_analytics():
+    from app.services.admin_service import get_analytics_stats
+    client = get_supabase()
+    return get_analytics_stats(client)
+
+@router.get("/profile", response_model=AdminProfile)
+def get_profile(admin: dict = Depends(admin_required)):
+    from app.services.admin_service import get_admin_profile
+    client = get_supabase()
+    return get_admin_profile(admin["id"], client)
+
+@router.put("/profile", response_model=AdminProfile)
+def update_profile(payload: AdminProfileUpdate, admin: dict = Depends(admin_required)):
+    from app.services.admin_service import update_admin_profile
+    client = get_supabase()
+    return update_admin_profile(admin["id"], payload.model_dump(exclude_unset=True), client)
